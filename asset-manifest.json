@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/umtc/static/css/main.f2178789.css",
-    "main.js": "/umtc/static/js/main.9ca1dff6.js",
+    "main.js": "/umtc/static/js/main.98b9f059.js",
     "static/js/453.5f5be0c6.chunk.js": "/umtc/static/js/453.5f5be0c6.chunk.js",
     "index.html": "/umtc/index.html",
     "main.f2178789.css.map": "/umtc/static/css/main.f2178789.css.map",
-    "main.9ca1dff6.js.map": "/umtc/static/js/main.9ca1dff6.js.map",
+    "main.98b9f059.js.map": "/umtc/static/js/main.98b9f059.js.map",
     "453.5f5be0c6.chunk.js.map": "/umtc/static/js/453.5f5be0c6.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f2178789.css",
-    "static/js/main.9ca1dff6.js"
+    "static/js/main.98b9f059.js"
   ]
 }
