@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/umtc/static/css/main.af90d581.css",
-    "main.js": "/umtc/static/js/main.c3944278.js",
+    "main.js": "/umtc/static/js/main.d4306e90.js",
     "static/js/453.bbd8b2fd.chunk.js": "/umtc/static/js/453.bbd8b2fd.chunk.js",
     "static/media/home_background.jpg": "/umtc/static/media/home_background.4069eb1074f3b79e299c.jpg",
     "static/media/general_members_2023.JPG": "/umtc/static/media/general_members_2023.c2841833ec8b555aad5a.JPG",
@@ -9,11 +9,11 @@
     "static/media/general_members_2024.jpg": "/umtc/static/media/general_members_2024.43274e1bab63b4388480.jpg",
     "index.html": "/umtc/index.html",
     "main.af90d581.css.map": "/umtc/static/css/main.af90d581.css.map",
-    "main.c3944278.js.map": "/umtc/static/js/main.c3944278.js.map",
+    "main.d4306e90.js.map": "/umtc/static/js/main.d4306e90.js.map",
     "453.bbd8b2fd.chunk.js.map": "/umtc/static/js/453.bbd8b2fd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.af90d581.css",
-    "static/js/main.c3944278.js"
+    "static/js/main.d4306e90.js"
   ]
 }
