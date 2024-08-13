@@ -8,7 +8,7 @@ import './Home.css';
 
 const Home = (props) => {
   const { state } = useAppData();
-  const isAdmin = true;
+  const isAdmin = false;
 
   return (
     <div className="app-container">
