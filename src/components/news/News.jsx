@@ -7,7 +7,7 @@ const News = ({ isAdmin }) => {
   const [editingItem, setEditingItem] = useState(null);
   const [newItem, setNewItem] = useState({ title: '', content: '' });
 
-  const googleSheetURL = 'https://script.google.com/macros/s/AKfycbx_SN4HFD5uPJmkmBPGUDzTTtF6J0lVocCuk5BEf9jfrs0OXjEcjO3Nr7VUhqQzYDkh7A/exec';
+  const googleSheetURL = 'https://script.google.com/macros/s/AKfycbx_70TyJo648iGZGBzf_qtL_U9bwCKkogUMEEbEk0aczdQSDZ6tHgwElUR3Er2g-Q9Cug/exec';
 
   // Fetch news data when the component mounts
   useEffect(() => {
