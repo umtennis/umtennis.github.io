@@ -55,15 +55,12 @@ const About = () => {
               style={{ maxWidth: "100%", height: "auto", margin: "20px 0" }}
             />
 
-            <h2>General Members 2023</h2>
+            <h2>Past Members</h2>
             <img
               src={generalMembers2023}
               alt="General Members 2023"
               style={{ maxWidth: "100%", height: "auto", margin: "20px 0" }}
             />
-
-
-
 
           </div>
         </div>
