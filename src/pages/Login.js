@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../components/header/Header.jsx";
-import LandingPage from "../components/landingPage/LandingPage.jsx";
+// import LandingPage from "../components/landingPage/LandingPage.jsx";
 import LoginForm from "../components/login/LoginForm.js"
 import useAppData from "../hooks/useAppData.js";
 

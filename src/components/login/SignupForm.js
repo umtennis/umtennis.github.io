@@ -1,6 +1,6 @@
 // import "./SignupForm.css"
 // import {useNavigate } from "react-router-dom";
-import {Dropdown} from "bootstrap"
+// import {Dropdown} from "bootstrap"
 
 
 function handleRegistration() {

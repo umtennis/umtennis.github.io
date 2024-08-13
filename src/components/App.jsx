@@ -1,7 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route} from "react-router-dom";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
+import About from "../pages/About"
 import Signup from "../pages/Signup"
+import Programs from "../pages/Programs"
 
 import "./App.css";
 
@@ -9,19 +11,19 @@ import "./App.css";
 
 function App(props) {
   // const {state, isLoggedIn, userBookingToken} = useAppData()
-
-  return (
+              
+  return ( 
     <>
-      <BrowserRouter>
-        <Routes>
-          {/* <Route path="/" element={<Login />}> */}
+      <Router>
+        <Routes>        
           <Route index element={<Home />} />
           <Route path="home" element={<Home />} />
+          <Route path="about" element={<About />} />
           <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
-          {/* </Route> */}
+          <Route path="signup" element={<Signup />} />        
+          <Route path="programs" element={<Programs />} />        
         </Routes>
-      </BrowserRouter>
+      </Router>
     </>
   );
 }
