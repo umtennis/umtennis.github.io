@@ -1,0 +1,128 @@
+
+
+.news-item {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Make sure the news item takes full width */
+  box-sizing: border-box; /* Ensure padding is included in width calculations */
+}
+
+.news-item h3 {
+  font-size: 18px;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.news-item p {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+  word-wrap: break-word; /* Prevent overflow of long words */
+}
+
+.news-actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.news-actions button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.edit-button {
+  background-color: #007bff;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+}
+
+.delete-button {
+  background-color: #dc3545;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+.new-news-item input,
+.new-news-item textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  font-size: 16px;
+}
+
+/* .new-news-item button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.new-news-item button:hover {
+  background-color: #218838;
+} */
+
+.delete-confirmation {
+  background-color: #ffe9e9;
+  padding: 15px;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.delete-actions {
+  display: flex;
+  justify-content: center; /* Center the buttons */
+  gap: 10px;
+}
+
+.confirm-button {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.confirm-button:hover {
+  background-color: #c82333;
+}
+
+.cancel-button {
+  background-color: #6c757d;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.cancel-button:hover {
+  background-color: #5a6268;
+}
+
+.news-date {
+  font-size: 12px;
+  color: #888;
+  margin-top: 5px;
+}

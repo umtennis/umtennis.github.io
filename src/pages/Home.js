@@ -1,9 +1,9 @@
 import React from "react";
 import Header from "../components/header/Header.jsx";
-import LandingPage from "../components/landingPage/LandingPage.jsx";
 import useAppData from "../hooks/useAppData.js";
-import News from "../components/news/News.jsx";
-import './Home.css'; // Import the CSS file
+import Announcements from "../components/news/Announcements.jsx";
+import LinkManagement from "../components/linkManagement/LinkManagement.jsx";
+import './Home.css'; 
 
 const Home = (props) => {
   const { state } = useAppData();
@@ -14,13 +14,19 @@ const Home = (props) => {
       <Header 
         isLoggedIn={state.isLoggedIn}
         user={state.user}
-      />      
+      />
       <div className="home-container">
-        <News isAdmin={isAdmin} />
+        <div className="content-container">
+          <div className="news-container">
+            <Announcements isAdmin={isAdmin} />
+          </div>
+          <div className="link-management-container">
+            <LinkManagement isAdmin={isAdmin} />
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default Home;
-

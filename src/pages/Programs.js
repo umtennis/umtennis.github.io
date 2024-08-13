@@ -21,26 +21,37 @@ const Programs = (props) => {
   };
 
   return (
+
+
     <div className="App">
-      <Header 
-        isLoggedIn={state.isLoggedIn}
-        user={state.user}
-      />
-      <div className="content programs-page-container">
-        <h2>Programs</h2>
-        <div className="buttons-container">
-          <button onClick={() => setSelectedForm('newMember')} className="program-button">
-            New Member
-          </button>
-          <button onClick={() => setSelectedForm('lessons')} className="program-button">
-            Lessons
-          </button>
-        </div>
-        <div className="form-container">
-          {renderForm()}
+      <Header />
+      <div className="home-container">
+        <div className="content-container">
+          <div className="club-schedule-container">
+
+            <h2>Programs</h2>
+            <div className="buttons-container">
+              <button onClick={() => setSelectedForm('newMember')} className="program-button">
+                New Member
+              </button>
+              <button onClick={() => setSelectedForm('lessons')} className="program-button">
+                Lessons
+              </button>
+            </div>
+            <div className="form-container">
+              {renderForm()}
+            </div>
+
+
+
+
+
+
+          </div>
         </div>
       </div>
     </div>
+
   );
 };
 export default Programs;

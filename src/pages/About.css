@@ -1,18 +1,18 @@
-.content {
+.about-content {
   padding: 20px;
 }
 
-.content-container {
+.about-content-container {
   max-width: 80%;
   margin: 0 auto;
 }
 
-.content h1,
-.content h2 {
+.about-content h1,
+.about-content h2 {
   margin-top: 20px;
 }
 
-.content p {
+.about-content p {
   margin-bottom: 20px;
 }
 
@@ -51,7 +51,7 @@
   border-radius: 8px;
 }
 
-.content img {
+.about-content img {
   max-width: 100%;
   height: auto;
   margin: 20px 0;

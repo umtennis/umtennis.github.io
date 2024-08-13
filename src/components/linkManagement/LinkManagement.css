@@ -1,0 +1,150 @@
+.no-links {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.new-link-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.new-link-input {
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-link-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-link-button:hover {
+  background-color: #0056b3;
+}
+
+.link-actions .edit-button,
+.link-actions .delete-button {
+  padding: 8px 12px;
+  font-size: 14px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.link-actions .delete-button {
+  background-color: #dc3545; /* Red for delete button */
+}
+
+.link-actions .edit-button:hover,
+.link-actions .delete-button:hover {
+  opacity: 0.9;
+}
+
+.delete-confirmation .confirm-button,
+.delete-confirmation .cancel-button {
+  padding: 8px 12px;
+  font-size: 14px;
+  color: white;
+  background-color: #dc3545; /* Red for confirm button */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.delete-confirmation .cancel-button {
+  background-color: #6c757d; /* Gray for cancel button */
+}
+
+.delete-confirmation .confirm-button:hover,
+.delete-confirmation .cancel-button:hover {
+  opacity: 0.9;
+}
+
+.link-item {
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  width: 100%; /* Ensure the link item takes up the full width of the container */
+  box-sizing: border-box; /* Ensure padding is included in the element's total width and height */
+}
+
+.custom-preview {
+  display: flex;
+  flex-direction: column;
+  border: none; /* Remove any extra border if present */
+  padding: 0;
+}
+
+.custom-preview-title {
+  font-size: 18px;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+.custom-preview-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.custom-preview-date {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.custom-preview-description {
+  font-size: 14px;
+  color: #555;
+}
+
+.custom-preview-url {
+  font-size: 14px;
+  color: #007bff;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+.custom-preview-url:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .custom-preview {
+    flex-direction: column; /* Ensure everything is stacked vertically */
+  }
+
+  .custom-preview-image {
+    width: 100%; /* Full width on mobile */
+    height: auto;
+    margin-bottom: 10px; /* Space between image and text */
+  }
+
+  .custom-preview-title {
+    margin-bottom: 10px; /* Space between title and image */
+  }
+
+  .custom-preview-description {
+    margin-top: 10px; /* Space between description and image */
+  }
+}

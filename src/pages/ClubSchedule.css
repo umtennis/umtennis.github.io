@@ -1,0 +1,12 @@
+.club-schedule-container {
+  background-color: #f9f9f9;
+  padding: 15px;
+  width: 80%;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex: 1; /* Allow the containers to take up equal space */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Enable vertical scrolling */
+
+}
