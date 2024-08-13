@@ -35,6 +35,8 @@ const LinkManagement = ({ isAdmin }) => {
   const [editingItem, setEditingItem] = useState(null);
   const [newItem, setNewItem] = useState({ url: "" });
   const [deletingItem, setDeletingItem] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(""); // State for success message
+
 
   const googleSheetURL = "https://script.google.com/macros/s/AKfycby_mBYKKYAmxDX24vm-o4R7id_0Xuvbwwnf31G66k687TMAdBxiWU7dtsXOiXD-8Fql5w/exec";
 
@@ -82,7 +84,9 @@ const LinkManagement = ({ isAdmin }) => {
       const metadata = await fetchMetadata(newItem.url);
       const newLinkItem = { id: newId, ...metadata };
   
-      dispatch({ type: "ADD_LINK", payload: newLinkItem });
+      // Add the new link to the top of the list
+      dispatch({ type: "SET_LINKS", payload: [newLinkItem, ...linkItems] });
+
   
       const response = await fetch(googleSheetURL, {
         method: "POST",
@@ -93,12 +97,17 @@ const LinkManagement = ({ isAdmin }) => {
         body: JSON.stringify({ ...newLinkItem, action: "add" }),
       });
   
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      console.log("Link added successfully.");
-      setNewItem({ url: "" });
+      // if (!response.ok) {
+      //   throw new Error(`HTTP error! status: ${response.status}`);
+      // }
+
+      setNewItem({ url: "" }); // Clear the input box
+      setSuccessMessage("Link added!"); // Show success message
+
+      // Hide the message after 3 seconds
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000);
   
     } catch (error) {
       console.error("Error adding link:", error);
@@ -114,10 +123,14 @@ const LinkManagement = ({ isAdmin }) => {
   return (
     <div className="link-management-container">
       <h2>News</h2>
+      
 
       {isAdmin && linkItems.length > 0 && (
         <div className="news-item new-news-item ">
-          <h3>Add New Link</h3>
+          <h3>
+          {(successMessage && <div className="success-message">{successMessage}</div>)||<div>Add New Link</div>} 
+
+          </h3>
           <input
             type="text"
             placeholder="Enter URL"

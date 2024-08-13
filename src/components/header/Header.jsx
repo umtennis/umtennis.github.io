@@ -15,6 +15,7 @@ function Header(props) {
             <Nav.Link as={Link} to="/home">Home</Nav.Link>
             <Nav.Link as={Link} to="/schedule">Club Schedule</Nav.Link>
             <Nav.Link as={Link} to="/programs">Programs</Nav.Link>
+            <Nav.Link as={Link} to="/socials">Socials</Nav.Link>
             <Nav.Link as={Link} to="/about">About Us</Nav.Link>
           </Nav>
           <Nav className="ms-auto">

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/header/Header.jsx";
+import Footer from "../components/footer/Footer.jsx";
 import "./ClubSchedule.css"
 
 const ClubSchedule = () => {
@@ -42,7 +43,7 @@ const ClubSchedule = () => {
   }, []);
 
   return (
-    <div className="App">
+    <div className="app-container">
       <Header />
       <div className="home-container">
         <div className="content-container">
@@ -64,6 +65,7 @@ const ClubSchedule = () => {
           </div>
         </div>
       </div>
+      <Footer /> 
     </div>
   );
 };

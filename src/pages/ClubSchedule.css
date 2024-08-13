@@ -10,3 +10,11 @@
   overflow-y: auto; /* Enable vertical scrolling */
 
 }
+
+@media (max-width: 768px) {
+  .club-schedule-container {
+    flex-direction: column;
+    height: auto; /* Allow containers to expand naturally on smaller screens */
+    width: 100%; /* Ensure the container takes full width on mobile */
+  }
+}

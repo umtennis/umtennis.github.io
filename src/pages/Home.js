@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../components/header/Header.jsx";
+import Footer from "../components/footer/Footer.jsx";
 import useAppData from "../hooks/useAppData.js";
 import Announcements from "../components/news/Announcements.jsx";
 import LinkManagement from "../components/linkManagement/LinkManagement.jsx";
@@ -7,10 +8,10 @@ import './Home.css';
 
 const Home = (props) => {
   const { state } = useAppData();
-  const isAdmin = false;
+  const isAdmin = true;
 
   return (
-    <div className="App">
+    <div className="app-container">
       <Header 
         isLoggedIn={state.isLoggedIn}
         user={state.user}
@@ -25,7 +26,9 @@ const Home = (props) => {
           </div>
         </div>
       </div>
+      <Footer /> 
     </div>
+    
   );
 };
 

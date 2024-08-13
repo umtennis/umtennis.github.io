@@ -8,7 +8,7 @@ const Signup = () => {
 
   const { state } = useAppData();
   return (
-    <div className="App">
+    <div className="app-container">
       <Header
         isLoggedIn={state.isLoggedIn}
         user={state.user}

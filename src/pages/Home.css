@@ -1,3 +1,12 @@
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  text-align: center;
+}
+
+
 .home-container {
   background-image: url('../assets/home_background.jpg');
   background-size: cover;
@@ -10,6 +19,8 @@
   align-items: center;
   justify-content: flex-start; /* Align items at the top */
   padding-top: 20px; /* Add padding to separate from the header */
+  padding-bottom: 20px; /* Add padding to separate from the header */
+  flex: 1;
 }
 
 .content-container {
@@ -32,6 +43,20 @@
   flex-direction: column;
   overflow-y: auto; /* Enable vertical scrolling */
 }
+
+.footer {
+  background-color: #f1f1f1;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  color: #555;
+  border-top: 1px solid #ddd;
+}
+
+.footer p {
+  margin: 0;
+}
+
 
 @media (max-width: 768px) {
   .content-container {

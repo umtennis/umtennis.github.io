@@ -1,0 +1,95 @@
+.socials-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.socials-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.socials-image-wrapper {
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.socials-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.socials-image-wrapper:hover .socials-image {
+  transform: scale(1.05);
+}
+
+/* Pop-up window styles */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  position: relative;
+  background: white;
+  padding: 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.enlarged-image {
+  width: 100%;
+  height: auto;
+  max-height: 90vh; /* Ensure the image doesn't exceed the viewport height */
+  object-fit: contain; /* Maintain the aspect ratio */
+  border-radius: 8px;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+.close-button:hover {
+  color: #ff0000;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  .socials-gallery {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Smaller grid items for mobile */
+    gap: 8px; /* Smaller gap for mobile */
+  }
+
+  .popup-content {
+    max-width: 95%; /* Reduce max width slightly for mobile */
+    max-height: 85%; /* Reduce max height slightly for mobile */
+  }
+
+  .close-button {
+    font-size: 20px; /* Slightly smaller close button for mobile */
+  }
+}

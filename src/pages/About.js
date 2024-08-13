@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../components/header/Header.jsx";
+import Footer from "../components/footer/Footer.jsx";
 import execMembers from "../assets/exec_members_2024.jpg";
 import generalMembers from "../assets/general_members_2024.jpg";
 import generalMembers2023 from "../assets/general_members_2023.JPG";
@@ -8,7 +9,7 @@ import "./About.css"; // Import the CSS for styling
 const About = () => {
   return (
 
-    <div className="App">
+    <div className="app-container">
       <Header />
       <div className="home-container">
         <div className="content-container">
@@ -65,15 +66,12 @@ const About = () => {
           </div>
         </div>
       </div>
+      <Footer /> 
     </div>
 
 
 
   )
-
-
-
-
 };
 
 export default About;

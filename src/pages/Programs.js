@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Header from "../components/header/Header.jsx";
+import Footer from "../components/footer/Footer.jsx";
 import useAppData from "../hooks/useAppData.js";
 import NewMemberSignup from "../components/programs/NewMemberSignup";
 // import LessonsForm from "../components/LessonsForm";
@@ -23,7 +24,7 @@ const Programs = (props) => {
   return (
 
 
-    <div className="App">
+    <div className="app-container">
       <Header />
       <div className="home-container">
         <div className="content-container">
@@ -50,6 +51,7 @@ const Programs = (props) => {
           </div>
         </div>
       </div>
+      <Footer /> 
     </div>
 
   );
