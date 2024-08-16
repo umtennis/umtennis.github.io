@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Header from "../components/header/Header.jsx";
 import Footer from "../components/footer/Footer.jsx";
 import "./Socials.css"
@@ -28,7 +28,7 @@ const Social = () => {
       <Header />
       <div className="home-container">
         <div className="content-container">
-          <div className="club-schedule-container">
+          <div className="single-content-container">
 
             <div className="socials-container">
               <h2>UMTC First Annual Tournament 2024</h2>

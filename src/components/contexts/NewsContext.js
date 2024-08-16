@@ -3,8 +3,8 @@ import React, { createContext, useReducer, useContext, useEffect } from 'react';
 const NewsStateContext = createContext();
 const NewsDispatchContext = createContext();
 
-const googleSheetURL =
-"https://script.google.com/macros/s/AKfycbxIn9vncR3YJuShlZttjV3R4i5KqxrxZOWG0ixLnuIhYR9hiAvvy2akQVQ9EofpKel7zA/exec";
+const googleSheetURL = process.env.REACT_APP_API_KEY_ANNOUNCEMENT;
+// const googleSheetURL = "https://script.google.com/macros/s/AKfycbxIn9vncR3YJuShlZttjV3R4i5KqxrxZOWG0ixLnuIhYR9hiAvvy2akQVQ9EofpKel7zA/exec";
 
 const newsReducer = (state, action) => {
   switch (action.type) {

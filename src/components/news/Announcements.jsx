@@ -2,30 +2,46 @@ import React, { useState } from "react";
 import { useNewsState, useNewsDispatch } from "../contexts/NewsContext";
 import "./Announcements.css";
 
+//TODO: handleSave and handleAdd can be reduced, much repeated
+
 const Announcements = ({ isAdmin }) => {
   const dispatch = useNewsDispatch();
   // const [newsItems, setNewsItems] = useState([]);
   // const [loading, setLoading] = useState(true); // Add a loading state
 
   const { newsItems, loading } = useNewsState(); // Use global state for newsItems and loading
-  
 
   const [editingItem, setEditingItem] = useState(null);
   const [newItem, setNewItem] = useState({ title: "", content: "" });
   const [deletingItem, setDeletingItem] = useState(null);
 
-  const googleSheetURL =
-    "https://script.google.com/macros/s/AKfycbxIn9vncR3YJuShlZttjV3R4i5KqxrxZOWG0ixLnuIhYR9hiAvvy2akQVQ9EofpKel7zA/exec";
+  const googleSheetURL = process.env.REACT_APP_API_KEY_ANNOUNCEMENT;
 
-
-  const handleSave = () => {
+  const handleSave = async () => {
     if (editingItem) {
-      dispatch({ type: "EDIT_NEWS", payload: editingItem });
+      try {
+        dispatch({ type: "EDIT_NEWS", payload: editingItem });
 
-      fetch(googleSheetURL, {
-        method: "POST",
-        body: JSON.stringify({ ...editingItem, action: "edit" }),
-      }).catch((error) => console.error("Error saving news:", error));
+        const response = await fetch(googleSheetURL, {
+          redirect: "follow",
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
+          },
+          body: JSON.stringify({ ...editingItem, action: "edit" }),
+        });
+
+        if (response.ok) {
+          alert("You have successfully saved a new announcement!");
+        } else {
+          alert(
+            `Could not connect...(server limit reached). Try again tomorrow.`
+          );
+        }
+      } catch (error) {
+        console.error("Error adding link:", error);
+        alert("Error! Possibly server limit reached. Try again tomorrow.");
+      }
 
       setEditingItem(null);
     }
@@ -36,36 +52,64 @@ const Announcements = ({ isAdmin }) => {
     setDeletingItem(null); // Exit edit mode without saving changes
   };
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     if (deletingItem) {
-      dispatch({ type: "DELETE_NEWS", payload: deletingItem.id });
+      try {
+        dispatch({ type: "DELETE_NEWS", payload: deletingItem.id });
 
-      fetch(googleSheetURL, {
-        method: "POST",
-        body: JSON.stringify({ id: deletingItem.id, action: "delete" }),
-      }).catch((error) => console.error("Error deleting news:", error));
-
+        const response = fetch(googleSheetURL, {
+          redirect: "follow",
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
+          },
+          body: JSON.stringify({ id: deletingItem.id, action: "delete" }),
+        });
+        if (response.ok) {
+          alert("You have successfully deleted a new announcement!");
+        } else {
+          alert(
+            `Could not connect...(server limit reached). Try again tomorrow.`
+          );
+        }
+      } catch (error) {
+        console.error("Error adding link:", error);
+        alert("Error! Possibly server limit reached. Try again tomorrow.");
+      }
       setDeletingItem(null);
     }
   };
 
-  const handleAdd = () => {
-    const newId =
-      newsItems.length > 0
-        ? Math.max(...newsItems.map((item) => item.id)) + 1
-        : 1;
-  
-    const currentDate = new Date().toLocaleDateString(); // Get the current date in a readable format
-  
-    const newNewsItem = { id: newId, ...newItem, date: currentDate };
-  
-    dispatch({ type: "ADD_NEWS", payload: newNewsItem });
-  
-    fetch(googleSheetURL, {
-      method: "POST",
-      body: JSON.stringify({ ...newNewsItem, action: "add" }),
-    }).catch((error) => console.error("Error adding news:", error));
-  
+  const handleAdd = async () => {
+    try {
+      const newId =
+        newsItems.length > 0
+          ? Math.max(...newsItems.map((item) => item.id)) + 1
+          : 1;
+
+      const currentDate = new Date().toLocaleDateString(); // Get the current date in a readable format
+
+      const newNewsItem = { id: newId, ...newItem, date: currentDate };
+
+      dispatch({ type: "ADD_NEWS", payload: newNewsItem });
+
+      const response = await fetch(googleSheetURL, {
+        method: "POST",
+        body: JSON.stringify({ ...newNewsItem, action: "add" }),
+      });
+
+      if (response.ok) {
+        alert("You have successfully added a new announcement!");
+      } else {
+        alert(
+          `Could not connect...(server limit reached). Try again tomorrow.`
+        );
+      }
+    } catch (error) {
+      console.error("Error adding link:", error);
+      alert("Error! Possibly server limit reached. Try again tomorrow.");
+    }
+
     setNewItem({ title: "", content: "" });
   };
 
@@ -76,7 +120,7 @@ const Announcements = ({ isAdmin }) => {
   return (
     <div className="news-container">
       <h2>Message Board</h2>
-      
+
       {isAdmin && (
         <div className="news-item new-news-item">
           <h3>Add New Content</h3>
@@ -93,7 +137,9 @@ const Announcements = ({ isAdmin }) => {
               setNewItem({ ...newItem, content: e.target.value })
             }
           />
-          <button onClick={handleAdd} className="add-link-button">Add News</button>
+          <button onClick={handleAdd} className="add-link-button">
+            Add News
+          </button>
         </div>
       )}
 
@@ -123,21 +169,37 @@ const Announcements = ({ isAdmin }) => {
             <>
               <h3>{item.title}</h3>
               <p>{item.content}</p>
-              <p className="news-date">{new Date(item.date).toISOString().split('T')[0]}</p> {/* Display the date */}
+              <p className="news-date">
+                {new Date(item.date).toISOString().split("T")[0]}
+              </p>{" "}
+              {/* Display the date */}
               {isAdmin && !deletingItem && (
                 <div className="news-actions new-news-item">
-                  <button onClick={() => setEditingItem(item)} className="edit-button">Edit</button>
-                  <button onClick={() => setDeletingItem(item)} className="delete-button">Delete</button>
+                  <button
+                    onClick={() => setEditingItem(item)}
+                    className="edit-button"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => setDeletingItem(item)}
+                    className="delete-button"
+                  >
+                    Delete
+                  </button>
                 </div>
               )}
             </>
           )}
-  
+
           {deletingItem && deletingItem.id === item.id && (
             <div className="delete-confirmation">
               <p>Are you sure you want to delete this item?</p>
               <div className="delete-actions">
-                <button onClick={handleDeleteConfirm} className="confirm-button">
+                <button
+                  onClick={handleDeleteConfirm}
+                  className="confirm-button"
+                >
                   Confirm
                 </button>
                 <button onClick={handleCancel} className="cancel-button">
@@ -150,6 +212,6 @@ const Announcements = ({ isAdmin }) => {
       ))}
     </div>
   );
-}  
+};
 
 export default Announcements;

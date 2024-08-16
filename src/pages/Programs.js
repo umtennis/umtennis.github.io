@@ -28,7 +28,7 @@ const Programs = (props) => {
       <Header />
       <div className="home-container">
         <div className="content-container">
-          <div className="club-schedule-container">
+          <div className="single-content-container">
 
             <h2>Programs</h2>
             <div className="buttons-container">

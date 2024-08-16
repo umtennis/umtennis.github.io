@@ -8,6 +8,8 @@ import Programs from "../pages/Programs";
 import Socials from "../pages/Socials";
 import { NewsProvider } from "./contexts/NewsContext"; // Import the NewsProvider
 import { LinkProvider } from "./contexts/LinkContext"; // Import the LinkProvider
+import { EventProvider } from './contexts/EventContext';
+
 
 import "./App.css";
 
@@ -17,6 +19,8 @@ function App(props) {
   return (
     <NewsProvider>
       <LinkProvider>
+      <EventProvider>
+
         <Router>
           <Routes>
             <Route index element={<Home />} />
@@ -29,6 +33,8 @@ function App(props) {
             <Route path="socials" element={<Socials />} />
           </Routes>
         </Router>
+ 
+    </EventProvider>
       </LinkProvider>
     </NewsProvider>
   );

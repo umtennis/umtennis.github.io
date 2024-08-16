@@ -13,7 +13,7 @@ const About = () => {
       <Header />
       <div className="home-container">
         <div className="content-container">
-          <div className="club-schedule-container">
+          <div className="single-content-container">
 
             <h1>About Us</h1>
             <p>

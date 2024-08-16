@@ -1,33 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { useLinkState, useLinkDispatch } from "../contexts/LinkContext";
-import CustomPreviewComponent from './CustomPreviewComponent'; // Import the custom preview component
+import CustomPreviewComponent from "./CustomPreviewComponent"; // Import the custom preview component
 import "./LinkManagement.css";
 
 const fetchMetadata = async (url) => {
   try {
-    const response = await fetch(`https://api.microlink.io?url=${encodeURIComponent(url)}`);
+    const response = await fetch(
+      `https://api.microlink.io?url=${encodeURIComponent(url)}`
+    );
     const data = await response.json();
     console.log("Fetched metadata:", data); // Log the fetched data
 
     return {
-      title: data.data.title || 'No Title Available',
-      description: data.data.description || 'No Description Available',
-      image: data.data.image?.url || 'https://example.com/default-image.jpg', // Provide a default image
-      date: data.data.date|| 'No Date Available',
-      url: data.data.url
+      title: data.data.title || "No Title Available",
+      description: data.data.description || "No Description Available",
+      image: data.data.image?.url || "https://example.com/default-image.jpg", // Provide a default image
+      date: data.data.date || "No Date Available",
+      url: data.data.url,
     };
   } catch (error) {
     console.error("Error fetching metadata:", error);
     return {
       title: "No Title Available",
       description: "No Description Available",
-      image: 'https://example.com/default-image.jpg', // Default image
+      image: "https://example.com/default-image.jpg", // Default image
       date: "No Date Available",
-      url: url
+      url: url,
     };
   }
 };
-
 
 const LinkManagement = ({ isAdmin }) => {
   const dispatch = useLinkDispatch();
@@ -37,8 +38,7 @@ const LinkManagement = ({ isAdmin }) => {
   const [deletingItem, setDeletingItem] = useState(null);
   const [successMessage, setSuccessMessage] = useState(""); // State for success message
 
-
-  const googleSheetURL = "https://script.google.com/macros/s/AKfycby_mBYKKYAmxDX24vm-o4R7id_0Xuvbwwnf31G66k687TMAdBxiWU7dtsXOiXD-8Fql5w/exec";
+  const googleSheetURL = process.env.REACT_APP_API_KEY_LINK_MANAGEMENT;
 
   useEffect(() => {
     fetch(googleSheetURL)
@@ -79,42 +79,46 @@ const LinkManagement = ({ isAdmin }) => {
 
   const handleAdd = async () => {
     try {
-      const newId = linkItems.length > 0 ? Math.max(...linkItems.map((item) => item.id)) + 1 : 1;
-  
+      const newId =
+        linkItems.length > 0
+          ? Math.max(...linkItems.map((item) => item.id)) + 1
+          : 1;
+
       const metadata = await fetchMetadata(newItem.url);
       const newLinkItem = { id: newId, ...metadata };
-  
+
       // Add the new link to the top of the list
       dispatch({ type: "SET_LINKS", payload: [newLinkItem, ...linkItems] });
 
-  
       const response = await fetch(googleSheetURL, {
+        redirect: "follow",
         method: "POST",
-        mode: 'no-cors',
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "text/plain;charset=utf-8",
         },
         body: JSON.stringify({ ...newLinkItem, action: "add" }),
       });
-  
-      // if (!response.ok) {
-      //   throw new Error(`HTTP error! status: ${response.status}`);
-      // }
 
-      setNewItem({ url: "" }); // Clear the input box
-      setSuccessMessage("Link added!"); // Show success message
+      // const result = JSON.parse(responseText);
+      if (response.ok) {
+        setNewItem({ url: "" }); // Clear the input box
+        setSuccessMessage("Link added!"); // Show success message
 
-      // Hide the message after 3 seconds
-      setTimeout(() => {
-        setSuccessMessage("");
-      }, 3000);
-  
+        // Hide the message after 3 seconds
+        setTimeout(() => {
+          setSuccessMessage("");
+        }, 3000);
+        alert("You have successfully added a new link!");
+      } else {
+        alert(
+          `Could not connect...(server limit reached). Try again tomorrow.`
+        );
+      }
     } catch (error) {
       console.error("Error adding link:", error);
+      alert('Error! Possibly server limit reached. Try again tomorrow.');
     }
   };
-  
-  
 
   if (loading) {
     return <div>Loading links...</div>;
@@ -123,13 +127,13 @@ const LinkManagement = ({ isAdmin }) => {
   return (
     <div className="link-management-container">
       <h2>News</h2>
-      
 
       {isAdmin && linkItems.length > 0 && (
         <div className="news-item new-news-item ">
           <h3>
-          {(successMessage && <div className="success-message">{successMessage}</div>)||<div>Add New Link</div>} 
-
+            {(successMessage && (
+              <div className="success-message">{successMessage}</div>
+            )) || <div>Add New Link</div>}
           </h3>
           <input
             type="text"
@@ -138,7 +142,9 @@ const LinkManagement = ({ isAdmin }) => {
             onChange={(e) => setNewItem({ ...newItem, url: e.target.value })}
             className="new-link-input"
           />
-          <button onClick={handleAdd} className="add-link-button">Add Link</button>
+          <button onClick={handleAdd} className="add-link-button">
+            Add Link
+          </button>
         </div>
       )}
 
@@ -153,7 +159,9 @@ const LinkManagement = ({ isAdmin }) => {
               onChange={(e) => setNewItem({ ...newItem, url: e.target.value })}
               className="new-link-input"
             />
-            <button onClick={handleAdd} className="add-link-button">Add Link</button>
+            <button onClick={handleAdd} className="add-link-button">
+              Add Link
+            </button>
           </div>
         </div>
       )}
@@ -181,7 +189,10 @@ const LinkManagement = ({ isAdmin }) => {
               <textarea
                 value={editingItem.description}
                 onChange={(e) =>
-                  setEditingItem({ ...editingItem, description: e.target.value })
+                  setEditingItem({
+                    ...editingItem,
+                    description: e.target.value,
+                  })
                 }
                 placeholder="Description"
               />
@@ -190,11 +201,22 @@ const LinkManagement = ({ isAdmin }) => {
             </div>
           ) : (
             <>
-              <CustomPreviewComponent data={item} /> {/* Use the custom preview component */}
+              <CustomPreviewComponent data={item} />{" "}
+              {/* Use the custom preview component */}
               {isAdmin && !deletingItem && (
                 <div className="link-actions">
-                  <button onClick={() => setEditingItem(item)} className="edit-button">Edit</button>
-                  <button onClick={() => setDeletingItem(item)} className="delete-button">Delete</button>
+                  <button
+                    onClick={() => setEditingItem(item)}
+                    className="edit-button"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => setDeletingItem(item)}
+                    className="delete-button"
+                  >
+                    Delete
+                  </button>
                 </div>
               )}
             </>
@@ -204,15 +226,23 @@ const LinkManagement = ({ isAdmin }) => {
             <div className="delete-confirmation">
               <p>Are you sure you want to delete this link?</p>
               <div className="delete-actions">
-                <button onClick={handleDeleteConfirm} className="confirm-button">Confirm</button>
-                <button onClick={() => setDeletingItem(null)} className="cancel-button">Cancel</button>
+                <button
+                  onClick={handleDeleteConfirm}
+                  className="confirm-button"
+                >
+                  Confirm
+                </button>
+                <button
+                  onClick={() => setDeletingItem(null)}
+                  className="cancel-button"
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           )}
         </div>
       ))}
-
-      
     </div>
   );
 };

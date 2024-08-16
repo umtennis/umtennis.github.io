@@ -1,20 +1,72 @@
-.club-schedule-container {
-  background-color: #f9f9f9;
-  padding: 15px;
-  width: 80%;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  flex: 1; /* Allow the containers to take up equal space */
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto; /* Enable vertical scrolling */
-
+/* Add this CSS to ensure the modal displays correctly */
+.ReactModal__Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 1000; /* Ensure the modal is on top of other content */
 }
 
-@media (max-width: 768px) {
-  .club-schedule-container {
-    flex-direction: column;
-    height: auto; /* Allow containers to expand naturally on smaller screens */
-    width: 100%; /* Ensure the container takes full width on mobile */
-  }
+.ReactModal__Content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  outline: none;
+  z-index: 1001; /* Ensure the modal content is on top */
+  width: 80%;
+  max-width: 500px;
+}
+
+.ReactModal__Content h2 {
+  margin-top: 0;
+}
+
+.ReactModal__Content button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.ReactModal__Content button:hover {
+  background-color: #0056b3;
+}
+
+/* Custom styles for the modal buttons */
+.participate-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #28a745; /* Green for participate button */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px; /* Add some spacing between buttons */
+}
+
+.participate-button:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+.event-close-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #dc3545; /* Red for close button */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.event-close-button:hover {
+  background-color: #c82333; /* Darker red on hover */
 }

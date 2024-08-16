@@ -1,11 +1,10 @@
-
+/* General container styles */
 .app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   text-align: center;
 }
-
 
 .home-container {
   background-image: url('../assets/home_background.jpg');
@@ -19,7 +18,7 @@
   align-items: center;
   justify-content: flex-start; /* Align items at the top */
   padding-top: 20px; /* Add padding to separate from the header */
-  padding-bottom: 20px; /* Add padding to separate from the header */
+  padding-bottom: 20px; /* Add padding to separate from the footer */
   flex: 1;
 }
 
@@ -57,7 +56,21 @@
   margin: 0;
 }
 
+/* Ensure the single-content-container adjusts nicely */
+.single-content-container {
+  background-color: #f9f9f9;
+  padding: 15px;
+  width: 80%;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex: 1; /* Allow the containers to take up equal space */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Enable vertical scrolling */
+  margin: 0 auto; /* Center the container */
+}
 
+/* Styles for mobile screens */
 @media (max-width: 768px) {
   .content-container {
     flex-direction: column;
@@ -71,5 +84,46 @@
     height: auto; /* Allow the containers to expand based on content */
     flex: none; /* Remove flex behavior to allow natural height */
     max-height: none; /* Remove any height restrictions */
+  }
+
+  .single-content-container {
+    width: 90%; /* Ensure the container takes full width on mobile */
+    height: auto; /* Allow the container to expand based on content */
+  }
+
+  .fc-header-toolbar {
+    flex-wrap: wrap; /* Allow the toolbar to wrap to multiple lines */
+    font-size: 0.8em; /* Smaller font size for the calendar controls */
+  }
+
+  .fc-view-harness {
+    width: 100%; /* Ensure the calendar view takes full width on mobile */
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
+  }
+
+  .fc-toolbar-title {
+    font-size: 1.2em; /* Adjust calendar title size */
+  }
+
+  .fc-button {
+    margin-bottom: 5px; /* Space out buttons in the toolbar */
+  }
+}
+
+
+
+/* Additional styles for better alignment and responsiveness */
+@media (max-width: 480px) {
+  .fc {
+    font-size: 0.7em; /* Smaller font size for FullCalendar */
+  }
+
+  .fc-toolbar-title {
+    font-size: 1em; /* Adjust calendar title size for smaller screens */
+  }
+
+  .fc-button-group {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically on small screens */
   }
 }

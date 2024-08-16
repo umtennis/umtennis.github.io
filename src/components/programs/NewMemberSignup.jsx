@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import './NewMemberSignup.css';
 
+const googleSheetURL = process.env.REACT_APP_API_KEY_NEW_MEMBER_SIGNUP
+
+//TODO: once signed up, remove input form and say that we will repond with email...
+
 const NewMemberSignup = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -25,9 +29,9 @@ const NewMemberSignup = () => {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbxJiePI0Ma0M0mWoz0KDSlF4wvVhQNhE1lJ-ElYwFdzW3lBCEen6E5O-IrNbn1rRYom/exec', {
+      const response = await fetch(googleSheetURL, {
         method: 'POST',
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData),        
       });
       const result = await response.json();
       if (result.result === 'success') {
