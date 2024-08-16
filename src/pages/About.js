@@ -52,11 +52,12 @@ const About = () => {
 
             <img
               src={generalMembers}
-              alt="General Members 2024"
+              alt="General Members 2023-2024"
               style={{ maxWidth: "100%", height: "auto", margin: "20px 0" }}
             />
 
-            <h2>Past Members</h2>
+            <h2>Past Seasons</h2>
+            <h3>2022-2023</h3>
             <img
               src={generalMembers2023}
               alt="General Members 2023"
