@@ -1,21 +1,21 @@
-import React from "react";
-import Header from "../components/header/Header.jsx";
-// import LandingPage from "../components/landingPage/LandingPage.jsx";
-import LoginForm from "../components/login/LoginForm.js"
-import useAppData from "../hooks/useAppData.js";
+import React, { useState, useContext } from 'react';
+import { UserContext } from '../components/contexts/UserContext';
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const { login } = useContext(UserContext);
 
-  const { state } = useAppData();
+  const handleLogin = () => {
+    login(email, phone);
+  };
+
   return (
-    <div className="App">
-      <Header
-        isLoggedIn={state.isLoggedIn}
-        user={state.user}
-      />
-      <LoginForm />
+    <div>
+      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <input type="text" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+      <button onClick={handleLogin}>Login</button>
     </div>
-
   );
 };
 

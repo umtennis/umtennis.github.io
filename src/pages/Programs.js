@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import Header from "../components/header/Header.jsx";
 import Footer from "../components/footer/Footer.jsx";
-import useAppData from "../hooks/useAppData.js";
+// import useAppData from "../hooks/useAppData.js";
 import NewMemberSignup from "../components/programs/NewMemberSignup";
 // import LessonsForm from "../components/LessonsForm";
 import "./Programs.css";
 
 const Programs = (props) => {
-  const { state } = useAppData();
+  // const { state } = useAppData();
   const [selectedForm, setSelectedForm] = useState(null);
 
   const renderForm = () => {

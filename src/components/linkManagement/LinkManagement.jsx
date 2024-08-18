@@ -9,7 +9,7 @@ const fetchMetadata = async (url) => {
       `https://api.microlink.io?url=${encodeURIComponent(url)}`
     );
     const data = await response.json();
-    console.log("Fetched metadata:", data); // Log the fetched data
+    
 
     return {
       title: data.data.title || "No Title Available",
@@ -49,7 +49,7 @@ const LinkManagement = ({ isAdmin }) => {
         dispatch({ type: "SET_LINKS", payload: sortedData });
       })
       .catch((error) => console.error("Error fetching links:", error));
-  }, [dispatch]);
+  }, [dispatch,googleSheetURL]);
 
   const handleSave = () => {
     if (editingItem) {

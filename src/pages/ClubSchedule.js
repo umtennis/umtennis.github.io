@@ -3,72 +3,126 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import Modal from 'react-modal';
 import Header from "../components/header/Header.jsx";
 import Footer from "../components/footer/Footer.jsx";
 import { EventContext } from '../components/contexts/EventContext';
+import { UserContext } from '../components/contexts/UserContext';
+import EventRegistrationModal from '../components/modals/EventRegistrationModal'; // Import the modal
 import "./ClubSchedule.css"
 
-
-//TODO: when adding show a loading symbol and prevent double click
-
-const googleSheetURL = process.env.REACT_APP_API_KEY_CLUB_SCHEDULE
-
-// Set the appElement for accessibility
-Modal.setAppElement('#root');
+const googleSheetURL = process.env.REACT_APP_API_KEY_CLUB_SCHEDULE;
+const maxParticipants = 18;
 
 const ClubSchedule = () => {
-  const { events, addParticipant, isFetching } = useContext(EventContext);
+  const { user } = useContext(UserContext);
+  const { events, addParticipant, removeParticipant, isFetching } = useContext(EventContext);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false); // Add loading state
+  // const [success, setSuccess] = useState(false);
 
   const handleEventClick = (info) => {
     const clickedEvent = events.find(event => event.id === info.event.id);
+    clickedEvent.maxParticipants = maxParticipants
     setSelectedEvent(clickedEvent);
     setModalIsOpen(true);
   };
 
-  const handleParticipate = async () => {
-    if (selectedEvent.number_of_participants < 20) {
-      setLoading(true); // Start loading
 
-      try {
+  const handleParticipate = async () => {
+    if (selectedEvent.number_of_participants < maxParticipants) {
+      // try {
         const response = await fetch(googleSheetURL, {
-          redirect: "follow",
+          // redirect: "follow",
           method: 'POST',
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8",
-          },
+          // headers: {
+          //   "Content-Type": "text/plain;charset=utf-8",
+          // },
           body: JSON.stringify({
             eventId: selectedEvent.id,
-            participantName: 'New Participant', // Replace this with actual participant name
-            eventDate: selectedEvent.start.split('T')[0], // Extract the date part from the start datetime
+            participantName: user.name,
+            eventDate: selectedEvent.start.split('T')[0],
+            action: "add"
           }),
+          
         });
-        if (response.ok) {
-          addParticipant(selectedEvent.id, 'New Participant'); // Replace with actual participant name
-          alert('You have successfully registered for the event!');
-        } else {
-          alert(`Error: ${response.message}`);
-        }
+        console.log(response);
 
-      } catch (error) {
-        console.error("Error adding participant:", error);
-        alert('Error! Possibly server limit reached. Try again tomorrow.');
-      } finally {
-        setLoading(false); // Stop loading
-        setModalIsOpen(false); // Close the modal
-      }
+        if (response.status === 200) {
+          const updatedParticipants = selectedEvent.participants + ', ' + user.name;
+
+          const updatedEvent = {
+            ...selectedEvent,
+            participants: updatedParticipants,
+            number_of_participants: selectedEvent.number_of_participants + 1,
+          };
+
+          setSelectedEvent(updatedEvent);
+          addParticipant(selectedEvent.id, user.name);
+          // setSuccess(true);
+          return { success: true };
+        } else {
+          return { success: false, message: `Error: ${response.statusText}` };
+        }
+      // } catch (error) {
+      //   console.error("Error adding participant:", error);
+      //   return { success: false, message: 'Error! Possibly server limit reached. Try again tomorrow.' };
+      // }
     } else {
-      alert('Sorry, this event is full.');
+      return { success: false, message: 'Sorry, this event is full.' };
     }
-    setModalIsOpen(false);
   };
 
-  if (isFetching) {
-    return <div>Loading events...</div>; // Optional: Add a loading state
-  }
+
+  const handleCancelParticipation = async () => {
+    try {
+      const response = await fetch(googleSheetURL, {
+        // redirect: "follow",
+        method: 'POST',
+        // headers: {
+        //   "Content-Type": "text/plain;charset=utf-8",
+        // },
+        body: JSON.stringify({
+          eventId: selectedEvent.id,
+          participantName: user.name,
+          eventDate: selectedEvent.start.split('T')[0],
+          action: "remove"
+        }),
+        
+      });
+      console.log(response);
+
+      if (response.status === 200) {
+        let participantsArray = selectedEvent.participants.split(', ');
+        // console.log(selectedEvent.participants);
+        let updatedParticipants = participantsArray.filter(name => name !== user.name)
+        updatedParticipants = updatedParticipants.join(', ')
+
+        // console.log(updatedParticipants);
+
+        const updatedEvent = {
+          ...selectedEvent,
+          participants: updatedParticipants,
+          number_of_participants: selectedEvent.number_of_participants - 1,
+        };
+
+        setSelectedEvent(updatedEvent);
+        removeParticipant(updatedEvent);
+
+        return { success: true };
+      } else {
+        return { success: false, message: `Error: ${response.statusText}` };
+      }
+    } catch (error) {
+      console.error("Error canceling participation:", error);
+      return { success: false, message: 'Error! Please try again later.' };
+    }
+  };
+
+
+
+  // if (isFetching) {
+  //   return <div>Loading events...</div>;
+  // }
 
   return (
     <div className="app-container">
@@ -76,13 +130,13 @@ const ClubSchedule = () => {
       <div className="home-container">
         <div className="content-container">
           <div className="single-content-container">
-            <h2>Club Schedule</h2>
+            {isFetching ? (<h2>Loading Events</h2>) : <h2>Club Schedule</h2>}
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
               initialView="timeGridWeek"
               events={events.map(event => ({
                 id: event.id,
-                title: `Event (${event.number_of_participants}/20)`,
+                title: `${event.title} \n (Spots Available: ${maxParticipants - event.number_of_participants}/${maxParticipants})`,
                 start: event.start,
                 end: event.end,
                 extendedProps: {
@@ -100,42 +154,16 @@ const ClubSchedule = () => {
               slotMinTime="09:00:00"
               slotMaxTime="24:00:00"
             />
+            {selectedEvent && <EventRegistrationModal
+              show={modalIsOpen}
+              handleClose={() => setModalIsOpen(false)}
+              selectedEvent={selectedEvent}
+              handleParticipate={handleParticipate}
+              handleCancelParticipation={handleCancelParticipation}
+              user={user}
+            />}
 
-            <Modal
-              isOpen={modalIsOpen}
-              onRequestClose={() => setModalIsOpen(false)}
-              contentLabel="Event Registration"
-              className="ReactModal__Content"
-              overlayClassName="ReactModal__Overlay"
-            >
-              <h2>Register for Event</h2>
-              <p>{selectedEvent?.title}</p>
-              <p>{`Participants: ${selectedEvent?.number_of_participants}/20`}</p>
-              {loading ? (
-                <div className="loading-spinner">Loading...</div> // You can replace this with an actual spinner component
-              ) : (
-                <>
-                  <ul>
-                    {selectedEvent?.participants.map((participant, index) => (
-                      <li key={index}>{participant}</li>
-                    ))}
-                  </ul>
-                  <button
-                    onClick={handleParticipate}
-                    disabled={loading || selectedEvent?.number_of_participants >= 20}
-                    className="participate-button"
-                  >
-                    Participate
-                  </button>
-                  <button
-                    onClick={() => setModalIsOpen(false)}
-                    className="event-close-button"
-                  >
-                    Close
-                  </button>
-                </>
-              )}
-            </Modal>
+
           </div>
         </div>
       </div>

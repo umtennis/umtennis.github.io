@@ -57,6 +57,13 @@
   background-color: #218838; /* Darker green on hover */
 }
 
+.participate-button:disabled {
+  background-color: #ccc; /* Change the background color */
+  color: #666; /* Change the text color */
+  cursor: not-allowed; /* Change the cursor to indicate the button is disabled */
+  opacity: 0.6; /* Make the button slightly transparent */
+}
+
 .event-close-button {
   padding: 10px 20px;
   font-size: 16px;
