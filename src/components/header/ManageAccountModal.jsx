@@ -3,7 +3,7 @@ import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import { UserContext } from '../contexts/UserContext';
 
 const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
@@ -13,6 +13,7 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
   const [topSize, setTopSize] = useState(user?.topSize || 'men-s');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -32,7 +33,9 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
       return;
     }
 
-    const updatedUser = {
+    setIsUpdating(true); // Start updating, disable the button and change text
+
+    const updatedUser = {      
       name,
       email,
       phone,
@@ -46,10 +49,21 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
     if (response.success) {
       setSuccess(true);
       setError('');
+      setUser(updatedUser); // Update the user context with the new data
     } else {
       setError('Update failed. Please try again.');
     }
+
+    setIsUpdating(false); // Stop updating, enable the button and change text back
   };
+
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        setSuccess(false);
+      }, 2000);
+    }
+  }, [success]);
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -125,15 +139,14 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
         )}
       </Modal.Body>
       <Modal.Footer>
-      {!success && (
-          <Button variant="primary" onClick={handleSubmit}>
-            Update
+        {!success && (
+          <Button variant="primary" onClick={handleSubmit} disabled={isUpdating}>
+            {isUpdating ? 'Updating...' : 'Update'}
           </Button>
         )}
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-
       </Modal.Footer>
     </Modal>
   );

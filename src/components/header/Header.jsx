@@ -3,7 +3,7 @@ import { Container, Nav, Navbar } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
 import LoginModal from './LoginModal';
-import SignupModal from './SignupModal';
+import SignUpModal from './SignUpModal';
 import ManageAccountModal from './ManageAccountModal';  // Import the ManageAccountModal component
 
 function Header() {
@@ -12,28 +12,28 @@ function Header() {
   let isLoggedIn = !!user;
 
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showSignupModal, setShowSignupModal] = useState(false);
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
   const [showManageAccountModal, setShowManageAccountModal] = useState(false);
 
   const handleShowLogin = () => setShowLoginModal(true);
   const handleCloseLogin = () => setShowLoginModal(false);
 
-  const handleShowSignup = () => setShowSignupModal(true);
-  const handleCloseSignup = () => setShowSignupModal(false);
+  const handleShowSignup = () => setShowSignUpModal(true);
+  const handleCloseSignup = () => setShowSignUpModal(false);
 
   const handleShowManageAccount = () => setShowManageAccountModal(true);
   const handleCloseManageAccount = () => setShowManageAccountModal(false);
 
 
-  const googleSheetURL = process.env.REACT_APP_API_KEY_MEMBER_POST
+  const googleSheetURL = process.env.REACT_APP_API_KEY_MEMBER
 
   const handleSignup = async (signupData) => {
     const response = await fetch(googleSheetURL, {
-      redirect: "follow",
+      // redirect: "follow",
       method: 'POST',
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8",
-      },
+      // headers: {
+      //   "Content-Type": "text/plain;charset=utf-8",
+      // },
       body: JSON.stringify(signupData),
     });
 
@@ -43,11 +43,11 @@ function Header() {
 
   const handleUpdate = async (updatedUser) => {
     const response = await fetch(googleSheetURL, {
-      redirect: "follow",
+      // redirect: "follow",
       method: 'POST',
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8",
-      },
+      // headers: {
+      //   "Content-Type": "text/plain;charset=utf-8",
+      // },
       body: JSON.stringify(updatedUser),
     });
 
@@ -79,7 +79,7 @@ function Header() {
       {/* Login Modal */}
       <LoginModal show={showLoginModal} handleClose={handleCloseLogin} />
       {/* Signup Modal */}
-      <SignupModal show={showSignupModal} handleClose={handleCloseSignup} handleSignup={handleSignup} />
+      <SignUpModal show={showSignUpModal} handleClose={handleCloseSignup} handleSignup={handleSignup} />
       {/* Manage Account Modal */}
       <ManageAccountModal show={showManageAccountModal} handleClose={handleCloseManageAccount} handleUpdate={handleUpdate} />
     </>

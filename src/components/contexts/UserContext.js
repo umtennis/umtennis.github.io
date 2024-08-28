@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
+import {Alert} from "react-bootstrap";
 
 const googleSheetURL = process.env.REACT_APP_API_KEY_MEMBER;
 
@@ -22,10 +23,15 @@ export const UserProvider = ({ children }) => {
       
       const response = await fetch(url);
       const data = await response.json();
-      console.log(data); 
+      // console.log(data); 
       if (data.error) {
         throw new Error(data.error);
       }
+      data.isAdmin = data.isAdmin === 1
+      data.isClubPaid = data.isClubPaid === 1
+      data.isRecPaid = data.isRecPaid === 1
+      data.isProspect = data.isProspect ===1 
+      
 
       setUser(data);
       // Save user session in a cookie
@@ -34,8 +40,9 @@ export const UserProvider = ({ children }) => {
         // secure: process.env.NODE_ENV === 'production', // Ensure it's only sent over HTTPS in production
         sameSite: 'Strict', // Prevent CSRF attacks
       });
+      return {success:true}
     } catch (error) {
-      console.error('Login failed:', error.message);
+      return {success:false}
     }
   };
 
@@ -45,7 +52,7 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user,setUser, login, logout }}>
       {children}
     </UserContext.Provider>
   );

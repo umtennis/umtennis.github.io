@@ -1,45 +1,43 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 
-const SignUpModal = ({ show, handleClose, handleSignup }) => {
+const CompTeamModal = ({ show, handleClose, handleSignup }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [rating, setRating] = useState("3");
-  const [status, setStatus] = useState("student");
-  const [topSize, setTopSize] = useState("men-s");
+  const [schoolYear, setSchoolYear] = useState("1");
+  const [experience, setExperience] = useState("");
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [error, setError] = useState("");
+
+  const googleSheetURL = process.env.REACT_APP_API_COMP_TEAM_SIGNUP
 
   const handleSubmit = async () => {
     // Clear previous errors
     setError("");
 
     // Validate all fields
-    if (
-      !firstName ||
-      !lastName ||
-      !email ||
-      !phone ||
-      !rating ||
-      !status ||
-      !topSize
-    ) {
+    if (!firstName || !lastName || !email || !phone || !schoolYear|| !experience) {
       setError("All fields are required. Please fill in all fields.");
       return;
     }
 
     const name = `${firstName} ${lastName}`;
 
-    // POST request to your Google Apps Script
-    const response = await handleSignup({
-      name,
-      email,
-      phone,
-      rating,
-      status,
-      topSize,
+    const response = await fetch(googleSheetURL, {
+      // redirect: "follow",
+      method: 'POST',
+      // headers: {
+      //   "Content-Type": "text/plain;charset=utf-8",
+      // },
+      body: JSON.stringify({
+        name,
+        email,
+        phone,
+        schoolYear,
+        experience,
+      }),
     });
 
     if (response.success) {
@@ -53,31 +51,20 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>
-          {signupSuccess ? "Signup Successful" : "Account Signup"}
+          {signupSuccess ? "Signup Successful" : "UM Competitive Team Tryouts"}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {signupSuccess ? (
           <p>
-            Successfully added account. Please make sure to send club fees to{" "}
-            <a href="mailto:umtennis@gmail.com">umtennis@gmail.com</a> and pay
-            Rec fees{" "}
-            <a
-              href="https://sportandrec.umanitoba.ca/UOFM/public/category/browse/WINTERCLUBS"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              here
-            </a>
-            . Your account will be processed as soon as the fees are received.
+            Successfully signed up for team tryouts. We will contact you soon.
           </p>
         ) : (
           <>
-             <p>Note: this form is for returning members only. For all new members, please reach out to{" "}
-              <a href="mailto:umtennis@gmail.com">umtennis@gmail.com</a>.</p>
-
-              <p>Once registered, please remember to make your payments for the club fee and the rec fee. 
-                You will be able to login using your email and phone number to book for sessions under Club Schedules page. 
+            <p>
+              Note: Please indicate your previous tournament experience and
+              result. All team players should have a minimum of 2 years of
+              competitive tournament experience.
             </p>
             {error && <Alert variant="danger">{error}</Alert>}
             <Form>
@@ -117,44 +104,27 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
                   onChange={(e) => setPhone(e.target.value)}
                 />
               </Form.Group>
-              <Form.Group controlId="formRating" className="mt-3">
-                <Form.Label>Rating</Form.Label>
+              <Form.Group controlId="formYear" className="mt-3">
+                <Form.Label>Current School Year</Form.Label>
                 <Form.Select
-                  value={rating}
-                  onChange={(e) => setRating(e.target.value)}
+                  value={schoolYear}
+                  onChange={(e) => setSchoolYear(e.target.value)}
                 >
-                  <option value="3">3</option>
-                  <option value="3.5">3.5</option>
-                  <option value="4">4</option>
-                  <option value="4.5">4.5</option>
-                  <option value="5.0">5.0+</option>
+                  <option value="1st">1st</option>
+                  <option value="2nd">2nd</option>
+                  <option value="3rd">3rd</option>
+                  <option value="4th+">4th+</option>
+                  <option value="Grad">Grad</option>
                 </Form.Select>
               </Form.Group>
-              <Form.Group controlId="formStatus" className="mt-3">
-                <Form.Label>Status</Form.Label>
-                <Form.Select
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                >
-                  <option value="student">Student</option>
-                  <option value="alumni">Alumni</option>
-                  <option value="staff">Staff</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group controlId="formTopSize" className="mt-3">
-                <Form.Label>Top Size</Form.Label>
-                <Form.Select
-                  value={topSize}
-                  onChange={(e) => setTopSize(e.target.value)}
-                >
-                  <option value="men-s">Men-S</option>
-                  <option value="men-m">Men-M</option>
-                  <option value="men-l">Men-L</option>
-                  <option value="men-xl">Men-XL</option>
-                  <option value="women-s">Women-S</option>
-                  <option value="women-m">Women-M</option>
-                  <option value="women-l">Women-L</option>
-                </Form.Select>
+              <Form.Group controlId="formExperience" className="mt-3">
+                <Form.Label>Experience</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  placeholder="Briefly describe your previous competitive experience"
+                  value={experience}
+                  onChange={(e) => setExperience(e.target.value)}
+                />
               </Form.Group>
             </Form>
           </>
@@ -180,4 +150,4 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
   );
 };
 
-export default SignUpModal;
+export default CompTeamModal;

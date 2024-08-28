@@ -22,6 +22,8 @@ export const EventProvider = ({ children }) => {
           end: event.end_time ? `${event.date}T${event.end_time}` : event.date,
           participants: event.participants || [],
           number_of_participants: event.number_of_participants || 0,
+          notes: event.notes || '',
+          maxParticipants: event.maxParticipants
         }));
 
       setEvents(mappedEvents);

@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 
-const SignUpModal = ({ show, handleClose, handleSignup }) => {
+const WaitlistModal = ({ show, handleClose, handleSignup }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [rating, setRating] = useState("3");
   const [status, setStatus] = useState("student");
-  const [topSize, setTopSize] = useState("men-s");
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [error, setError] = useState("");
+
+  const googleSheetURL = process.env.REACT_APP_API_KEY_NEW_MEMBER_WAITLIST;
+
 
   const handleSubmit = async () => {
     // Clear previous errors
@@ -23,8 +25,7 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
       !email ||
       !phone ||
       !rating ||
-      !status ||
-      !topSize
+      !status 
     ) {
       setError("All fields are required. Please fill in all fields.");
       return;
@@ -32,52 +33,48 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
 
     const name = `${firstName} ${lastName}`;
 
-    // POST request to your Google Apps Script
-    const response = await handleSignup({
-      name,
-      email,
-      phone,
-      rating,
-      status,
-      topSize,
+    const response = await fetch(googleSheetURL, {
+      // redirect: "follow",
+      method: 'POST',
+      // headers: {
+      //   "Content-Type": "text/plain;charset=utf-8",
+      // },
+      body: JSON.stringify({
+        name,
+        email,
+        phone,
+        rating,
+        status,
+      }),
     });
 
-    if (response.success) {
+    console.log(response)
+
+    if (response.ok) {
       setSignupSuccess(true);
     } else {
       setError("Signup failed. Please try again.");
     }
+
+
   };
 
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>
-          {signupSuccess ? "Signup Successful" : "Account Signup"}
+          {signupSuccess ? "Signup Successful" : "Waitlist Signup"}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {signupSuccess ? (
           <p>
-            Successfully added account. Please make sure to send club fees to{" "}
-            <a href="mailto:umtennis@gmail.com">umtennis@gmail.com</a> and pay
-            Rec fees{" "}
-            <a
-              href="https://sportandrec.umanitoba.ca/UOFM/public/category/browse/WINTERCLUBS"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              here
-            </a>
-            . Your account will be processed as soon as the fees are received.
+            Successfully signup to the waitlist!
           </p>
         ) : (
           <>
-             <p>Note: this form is for returning members only. For all new members, please reach out to{" "}
-              <a href="mailto:umtennis@gmail.com">umtennis@gmail.com</a>.</p>
-
-              <p>Once registered, please remember to make your payments for the club fee and the rec fee. 
-                You will be able to login using your email and phone number to book for sessions under Club Schedules page. 
+             <p>
+              Please fill out the following information to be added to the waitlist. Once a spot becomes available we will notify you for a free tryout session.
             </p>
             {error && <Alert variant="danger">{error}</Alert>}
             <Form>
@@ -140,22 +137,7 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
                   <option value="alumni">Alumni</option>
                   <option value="staff">Staff</option>
                 </Form.Select>
-              </Form.Group>
-              <Form.Group controlId="formTopSize" className="mt-3">
-                <Form.Label>Top Size</Form.Label>
-                <Form.Select
-                  value={topSize}
-                  onChange={(e) => setTopSize(e.target.value)}
-                >
-                  <option value="men-s">Men-S</option>
-                  <option value="men-m">Men-M</option>
-                  <option value="men-l">Men-L</option>
-                  <option value="men-xl">Men-XL</option>
-                  <option value="women-s">Women-S</option>
-                  <option value="women-m">Women-M</option>
-                  <option value="women-l">Women-L</option>
-                </Form.Select>
-              </Form.Group>
+              </Form.Group>             
             </Form>
           </>
         )}
@@ -180,4 +162,4 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
   );
 };
 
-export default SignUpModal;
+export default WaitlistModal;

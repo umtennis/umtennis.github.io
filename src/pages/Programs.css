@@ -1,69 +1,72 @@
-.programs-page-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.buttons-container {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.program-button {
-  flex: 1;
-  margin: 0 10px;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.program-button:hover {
-  background-color: #0056b3;
-}
-
-/* .form-container {
-  margin-top: 20px;
-}
-
-form {
+.app-container {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
-.form-group {
-  margin-bottom: 15px;
+.home-container {
+  flex: 1;
+  padding: 20px;
+  background-color: #f8f9fa;
 }
 
-form label {
-  margin-bottom: 5px;
+.content-container {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-form input,
-form select {
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #ced4da;
-  font-size: 16px;
+h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #333;
 }
 
-.submit-button {
-  padding: 10px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
+.programs-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.program-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  transition: background-color 0.3s ease;
   cursor: pointer;
-  font-size: 16px;
 }
 
-.submit-button:hover {
-  background-color: #218838;
-} */
+.program-card:hover {
+  background-color: #f1f1f1;
+}
+
+.program-title {
+  margin: 0;
+  color: #007bff;
+}
+
+.program-description {
+  margin-top: 15px;
+}
+
+.program-description ul {
+  padding-left: 20px; /* Indent the bullets slightly */
+  list-style-type: disc;
+  margin: 0; /* Remove any default margin */
+  text-align: left; /* Ensure the text aligns to the left */
+}
+
+.program-description ul li {
+  margin-bottom: 10px;
+  color: #555;
+  text-align: left; /* Ensure the text aligns to the left */
+}
+
+.program-description a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.program-description a:hover {
+  text-decoration: underline;
+}

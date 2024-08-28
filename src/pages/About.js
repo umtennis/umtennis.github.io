@@ -17,7 +17,7 @@ const About = () => {
 
             <h1>About Us</h1>
             <p>
-              The University of Manitoba Tennis Club (UMTC) welcomes both leisure and competitive players who meet our minimum skill level requirement, as outlined in the Tennis Canada Self-Rating Guide (<a href="https://www.tenniscanada.com/wp-content/uploads/2015/12/Self-Rating-Guide-English.pdf" target="_blank" rel="noopener noreferrer">View here</a>).
+              The University of Manitoba Tennis Club (UMTC) welcomes both leisure and competitive players who meet our minimum skill level requirement, rating of 3.0 as outlined in the Tennis Canada Self-Rating Guide (<a href="https://www.tenniscanada.com/wp-content/uploads/2015/12/Self-Rating-Guide-English.pdf" target="_blank" rel="noopener noreferrer">View here</a>).
             </p><p>
               Tryouts are held at the beginning of each term to ensuring a great experience for all.
             </p>

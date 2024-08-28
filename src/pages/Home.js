@@ -20,10 +20,10 @@ const Home = (props) => {
       <div className="home-container">
         <div className="content-container">
           <div className="news-container">
-            <Announcements isAdmin={user?.isAdmin === 1} />
+            <Announcements isAdmin={user?.isAdmin} />
           </div>
           <div className="link-management-container">
-            <LinkManagement isAdmin={user?.isAdmin === 1} />
+            <LinkManagement isAdmin={user?.isAdmin} />
           </div>
         </div>
       </div>
