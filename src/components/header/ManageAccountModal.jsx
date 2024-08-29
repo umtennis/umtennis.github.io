@@ -1,21 +1,29 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Modal, Button, Form, Alert } from 'react-bootstrap';
-import { UserContext } from '../contexts/UserContext';
+import React, { useState, useContext, useEffect } from "react";
+import {
+  Modal,
+  Button,
+  Form,
+  Alert,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
+import { UserContext } from "../contexts/UserContext";
 
 const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
   const { user, setUser } = useContext(UserContext);
 
-  const [name, setName] = useState(user?.name || '');
-  const [email, setEmail] = useState(user?.email || '');
-  const [newEmail, setNewEmail] = useState(user?.email || '');
-  const [phone, setPhone] = useState(user?.phone || '');
-  const [newPhone, setNewPhone] = useState(user?.phone || '');
-  const [rating, setRating] = useState(user?.rating || '3');
-  const [status, setStatus] = useState(user?.status || 'student');
-  const [topSize, setTopSize] = useState(user?.topSize || 'men-s');
-  const [error, setError] = useState('');
+  const [name, setName] = useState(user?.name || "");
+  const [email, setEmail] = useState(user?.email || "");
+  const [newEmail, setNewEmail] = useState(user?.email || "");
+  const [phone, setPhone] = useState(user?.phone || "");
+  const [newPhone, setNewPhone] = useState(user?.phone || "");
+  const [rating, setRating] = useState(user?.rating || "3");
+  const [status, setStatus] = useState(user?.status || "student");
+  const [topSize, setTopSize] = useState(user?.topSize || "men-s");
+  const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -33,37 +41,47 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
   const handleSubmit = async () => {
     // Validate fields
     if (!name || !email || !phone) {
-      setError('All fields are required.');
+      setError("All fields are required.");
       return;
     }
-    
+
     setIsUpdating(true); // Start updating, disable the button and change text
 
-    const updatedUser = {      
+    const updatedUser = {
       name,
-      email, 
+      email,
       phone,
       rating,
       status,
-      topSize,  
+      topSize,
       newEmail,
       newPhone,
-      action:'update' 
+      action: "update",
     };
 
     const response = await handleUpdate(updatedUser);
 
     if (response.success) {
       setSuccess(true);
-      setError('');   
-      console.log(response)   
-      user.email = response.user.email
-      setUser(response.user); // Update the user context with the 
+      setError("");
+      user.email = response.user.email;
+      setUser(response.user); // Update the user context with the
     } else {
-      setError('Update failed. Please try again.');
+      setError("Update failed. Please try again.");
     }
 
     setIsUpdating(false); // Stop updating, enable the button and change text back
+  };
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    // Show tooltip if non-numeric characters are typed
+    if (/^\d*$/.test(value)) {
+      setNewPhone(value);
+      setShowTooltip(false); // Hide tooltip
+    } else {
+      setShowTooltip(true); // Show tooltip
+    }
   };
 
   useEffect(() => {
@@ -81,7 +99,9 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
       </Modal.Header>
       <Modal.Body>
         {success ? (
-          <Alert variant="success">Your account has been updated successfully!</Alert>
+          <Alert variant="success">
+            Your account has been updated successfully!
+          </Alert>
         ) : (
           <>
             {error && <Alert variant="danger">{error}</Alert>}
@@ -106,16 +126,29 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
               </Form.Group>
               <Form.Group controlId="formPhone" className="mt-3">
                 <Form.Label>Phone</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter phone number"
-                  value={newPhone}
-                  onChange={(e) => setNewPhone(e.target.value)}
-                />
+                <OverlayTrigger
+                  placement="right"
+                  show={showTooltip}
+                  overlay={
+                    <Tooltip id="tooltip-phone">Enter numbers only</Tooltip>
+                  }
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter phone number"
+                    value={newPhone}
+                    onChange={handlePhoneChange}
+                    pattern="\d*"
+                    inputMode="numeric"
+                  />
+                </OverlayTrigger>
               </Form.Group>
               <Form.Group controlId="formRating" className="mt-3">
                 <Form.Label>Rating</Form.Label>
-                <Form.Select value={rating} onChange={(e) => setRating(e.target.value)}>
+                <Form.Select
+                  value={rating}
+                  onChange={(e) => setRating(e.target.value)}
+                >
                   <option value="3">3</option>
                   <option value="3.5">3.5</option>
                   <option value="4">4</option>
@@ -125,7 +158,10 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
               </Form.Group>
               <Form.Group controlId="formStatus" className="mt-3">
                 <Form.Label>Status</Form.Label>
-                <Form.Select value={status} onChange={(e) => setStatus(e.target.value)}>
+                <Form.Select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                >
                   <option value="student">Student</option>
                   <option value="alumni">Alumni</option>
                   <option value="staff">Staff</option>
@@ -133,7 +169,10 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
               </Form.Group>
               <Form.Group controlId="formTopSize" className="mt-3">
                 <Form.Label>Top Size</Form.Label>
-                <Form.Select value={topSize} onChange={(e) => setTopSize(e.target.value)}>
+                <Form.Select
+                  value={topSize}
+                  onChange={(e) => setTopSize(e.target.value)}
+                >
                   <option value="men-s">Men-S</option>
                   <option value="men-m">Men-M</option>
                   <option value="men-l">Men-L</option>
@@ -141,6 +180,7 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
                   <option value="women-s">Women-S</option>
                   <option value="women-m">Women-M</option>
                   <option value="women-l">Women-L</option>
+                  <option value="women-xl">Women-L</option>
                 </Form.Select>
               </Form.Group>
             </Form>
@@ -149,8 +189,12 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
       </Modal.Body>
       <Modal.Footer>
         {!success && (
-          <Button variant="primary" onClick={handleSubmit} disabled={isUpdating}>
-            {isUpdating ? 'Updating...' : 'Update'}
+          <Button
+            variant="primary"
+            onClick={handleSubmit}
+            disabled={isUpdating}
+          >
+            {isUpdating ? "Updating..." : "Update"}
           </Button>
         )}
         <Button variant="secondary" onClick={handleClose}>

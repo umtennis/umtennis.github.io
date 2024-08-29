@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import { Modal, Button, Form, Alert } from "react-bootstrap";
+import React, { useState, useContext } from "react";
+import { UserContext } from '../contexts/UserContext';
+import { Modal, Button, Form, Alert, OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const SignUpModal = ({ show, handleClose, handleSignup }) => {
+  const { setUser } = useContext(UserContext);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -10,10 +12,26 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
   const [status, setStatus] = useState("student");
   const [topSize, setTopSize] = useState("men-s");
   const [signupSuccess, setSignupSuccess] = useState(false);
-  const [code,setCode] = useState("");
+  const [code, setCode] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    // Show tooltip if non-numeric characters are typed
+    if (/^\d*$/.test(value)) {
+      setPhone(value);
+      setShowTooltip(false); // Hide tooltip
+    } else {
+      setShowTooltip(true); // Show tooltip
+    }
+  };
 
   const handleSubmit = async () => {
+    // Disable the submit button
+    setIsSubmitting(true);
+
     // Clear previous errors
     setError("");
 
@@ -29,26 +47,32 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
       !code
     ) {
       setError("All fields are required. Please fill in all fields.");
+      setIsSubmitting(false);
       return;
     }
 
     const name = `${firstName} ${lastName}`;
 
-    // POST request to your Google Apps Script
-    const response = await handleSignup({
+    const newUser = {
       name,
       email,
       phone,
       rating,
       status,
       topSize,
-      code
-    });
+      code,
+    };
+    
+    // POST request to your Google Apps Script
+    const response = await handleSignup(newUser);
 
+    console.log(response);
     if (response.success) {
+      setUser(newUser);
       setSignupSuccess(true);
     } else {
       setError(response.message);
+      setIsSubmitting(false); // Re-enable the submit button if there's an error
     }
   };
 
@@ -76,11 +100,17 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
           </p>
         ) : (
           <>
-             <p>Note: You will need a registration code to sign up. For all new members, please reach out to{" "}
-              <a href="mailto:umtennis@gmail.com">umtennis@gmail.com</a>.</p>
+            <p>
+              Note: You will need a registration code to sign up. For all new
+              members, please reach out to{" "}
+              <a href="mailto:umtennis@gmail.com">umtennis@gmail.com</a>.
+            </p>
 
-              <p>Once registered, please remember to make your payments for the club fee and the rec fee. 
-                You will be able to login using your email and phone number to book for sessions under Club Schedules page. 
+            <p>
+              Once registered, please remember to make your payments for the
+              club fee and the rec fee. You will be able to login using your
+              email and phone number to book for sessions under Club Schedules
+              page.
             </p>
             {error && <Alert variant="danger">{error}</Alert>}
             <Form>
@@ -113,12 +143,20 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
               </Form.Group>
               <Form.Group controlId="formPhone" className="mt-3">
                 <Form.Label>Phone</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter phone number"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
+                <OverlayTrigger
+                  placement="right"
+                  show={showTooltip}
+                  overlay={<Tooltip id="tooltip-phone">Enter numbers only</Tooltip>}
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter phone number"
+                    value={phone}
+                    onChange={handlePhoneChange}
+                    pattern="\d*"
+                    inputMode="numeric"
+                  />
+                </OverlayTrigger>
               </Form.Group>
               <Form.Group controlId="formRating" className="mt-3">
                 <Form.Label>Rating</Form.Label>
@@ -157,6 +195,7 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
                   <option value="women-s">Women-S</option>
                   <option value="women-m">Women-M</option>
                   <option value="women-l">Women-L</option>
+                  <option value="women-xl">Women-L</option>
                 </Form.Select>
               </Form.Group>
               <Form.Group controlId="formCode" className="mt-3">
@@ -179,7 +218,11 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
           </Button>
         ) : (
           <>
-            <Button variant="primary" onClick={handleSubmit}>
+            <Button
+              variant="primary"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            >
               Submit
             </Button>
             <Button variant="secondary" onClick={handleClose}>

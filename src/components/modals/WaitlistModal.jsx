@@ -47,9 +47,6 @@ const WaitlistModal = ({ show, handleClose, handleSignup }) => {
         status,
       }),
     });
-
-    console.log(response)
-
     if (response.ok) {
       setSignupSuccess(true);
     } else {

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Modal, Button, Alert, Form } from "react-bootstrap";
+import { Modal, Button, Form, Alert, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { UserContext } from "../contexts/UserContext";
 
 const LoginModal = ({ show, handleClose }) => {
@@ -7,8 +7,9 @@ const LoginModal = ({ show, handleClose }) => {
   const { login } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  // const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [error, setError] = useState("");
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const handleSubmit = async () => {
     setError("");
@@ -20,16 +21,28 @@ const LoginModal = ({ show, handleClose }) => {
     setLoading(true);
     const response = await login(email, phone);
     setLoading(false);
-    handleClose();
+
     // console.log(response)
 
     if (response.success) {
-      setShowSuccessMessage(true);
+
+      handleClose();
       // Close the modal after login attempt
     } else {
       setError("User email did not match any phone number. ");
     }
   };
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    // Show tooltip if non-numeric characters are typed
+    if (/^\d*$/.test(value)) {
+      setPhone(value);
+      setShowTooltip(false); // Hide tooltip
+    } else {
+      setShowTooltip(true); // Show tooltip
+    }
+  };
+
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -49,21 +62,35 @@ const LoginModal = ({ show, handleClose }) => {
             />
           </Form.Group>
 
+
           <Form.Group controlId="formPhone" className="mt-3">
-            <Form.Label>Phone Number</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter phone number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </Form.Group>
+                <Form.Label>Phone</Form.Label>
+                <OverlayTrigger
+                  placement="right"
+                  show={showTooltip}
+                  overlay={<Tooltip id="tooltip-phone">Enter numbers only</Tooltip>}
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter phone number"
+                    value={phone}
+                    onChange={handlePhoneChange}
+                    pattern="\d*"
+                    inputMode="numeric"
+                  />
+                </OverlayTrigger>
+              </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={handleSubmit}>
+        <Button
+          variant="primary"
+          onClick={handleSubmit}
+          disabled={loading} // Disable the button when loading
+        >
           {loading ? "Loading..." : "Submit"}
         </Button>
+
         <Button variant="secondary" onClick={handleClose}>
           Cancel
         </Button>

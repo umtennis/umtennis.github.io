@@ -40,7 +40,7 @@ const CompTeamModal = ({ show, handleClose, handleSignup }) => {
       }),
     });
 
-    if (response.success) {
+    if (response.ok) {
       setSignupSuccess(true);
     } else {
       setError("Signup failed. Please try again.");

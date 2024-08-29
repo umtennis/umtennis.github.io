@@ -3,7 +3,7 @@ import { Container, Nav, Navbar } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
 import LoginModal from './LoginModal';
-import SignUpModal from './SignUpModal';
+import SignUpModal from './SignupModal';
 import ManageAccountModal from './ManageAccountModal';  // Import the ManageAccountModal component
 
 function Header() {
