@@ -7,7 +7,9 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
 
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
+  const [newEmail, setNewEmail] = useState(user?.email || '');
   const [phone, setPhone] = useState(user?.phone || '');
+  const [newPhone, setNewPhone] = useState(user?.phone || '');
   const [rating, setRating] = useState(user?.rating || '3');
   const [status, setStatus] = useState(user?.status || 'student');
   const [topSize, setTopSize] = useState(user?.topSize || 'men-s');
@@ -19,7 +21,9 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
     if (user) {
       setName(user.name);
       setEmail(user.email);
+      setNewEmail(user.email);
       setPhone(user.phone);
+      setNewPhone(user.phone);
       setRating(user.rating);
       setStatus(user.status);
       setTopSize(user.topSize);
@@ -32,24 +36,29 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
       setError('All fields are required.');
       return;
     }
-
+    
     setIsUpdating(true); // Start updating, disable the button and change text
 
     const updatedUser = {      
       name,
-      email,
+      email, 
       phone,
       rating,
       status,
-      topSize,
+      topSize,  
+      newEmail,
+      newPhone,
+      action:'update' 
     };
 
     const response = await handleUpdate(updatedUser);
 
     if (response.success) {
       setSuccess(true);
-      setError('');
-      setUser(updatedUser); // Update the user context with the new data
+      setError('');   
+      console.log(response)   
+      user.email = response.user.email
+      setUser(response.user); // Update the user context with the 
     } else {
       setError('Update failed. Please try again.');
     }
@@ -91,8 +100,8 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
                 <Form.Control
                   type="email"
                   placeholder="Enter email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
                 />
               </Form.Group>
               <Form.Group controlId="formPhone" className="mt-3">
@@ -100,8 +109,8 @@ const ManageAccountModal = ({ show, handleClose, handleUpdate }) => {
                 <Form.Control
                   type="text"
                   placeholder="Enter phone number"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  value={newPhone}
+                  onChange={(e) => setNewPhone(e.target.value)}
                 />
               </Form.Group>
               <Form.Group controlId="formRating" className="mt-3">

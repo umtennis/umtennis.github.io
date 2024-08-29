@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import {Alert} from "react-bootstrap";
 
 const googleSheetURL = process.env.REACT_APP_API_KEY_MEMBER;
 

@@ -10,6 +10,7 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
   const [status, setStatus] = useState("student");
   const [topSize, setTopSize] = useState("men-s");
   const [signupSuccess, setSignupSuccess] = useState(false);
+  const [code,setCode] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = async () => {
@@ -24,7 +25,8 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
       !phone ||
       !rating ||
       !status ||
-      !topSize
+      !topSize ||
+      !code
     ) {
       setError("All fields are required. Please fill in all fields.");
       return;
@@ -40,12 +42,13 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
       rating,
       status,
       topSize,
+      code
     });
 
     if (response.success) {
       setSignupSuccess(true);
     } else {
-      setError("Signup failed. Please try again.");
+      setError(response.message);
     }
   };
 
@@ -73,7 +76,7 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
           </p>
         ) : (
           <>
-             <p>Note: this form is for returning members only. For all new members, please reach out to{" "}
+             <p>Note: You will need a registration code to sign up. For all new members, please reach out to{" "}
               <a href="mailto:umtennis@gmail.com">umtennis@gmail.com</a>.</p>
 
               <p>Once registered, please remember to make your payments for the club fee and the rec fee. 
@@ -155,6 +158,15 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
                   <option value="women-m">Women-M</option>
                   <option value="women-l">Women-L</option>
                 </Form.Select>
+              </Form.Group>
+              <Form.Group controlId="formCode" className="mt-3">
+                <Form.Label>Registration Code</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter registration code"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                />
               </Form.Group>
             </Form>
           </>
