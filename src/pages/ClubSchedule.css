@@ -77,3 +77,11 @@
 .event-close-button:hover {
   background-color: #c82333; /* Darker red on hover */
 }
+
+.event-text-mobile {
+  font-size: 8px;
+}
+
+.event-text-desktop {
+  font-size: 11px;
+}

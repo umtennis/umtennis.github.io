@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState,useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -18,12 +18,17 @@ const ClubSchedule = () => {
   const { events, addParticipant, removeParticipant, isFetching } = useContext(EventContext);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  // const [success, setSuccess] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth); // Track screen width
 
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleEventClick = (info) => {
     const clickedEvent = events.find(event => event.id === info.event.id);
-    // clickedEvent.maxParticipants = maxParticipants
     setSelectedEvent(clickedEvent);
     setModalIsOpen(true);
   };
@@ -180,22 +185,20 @@ const ClubSchedule = () => {
     }
   };
 
+
+
   function renderEventContent(eventInfo) {
+    const textClass = screenWidth < 768 ? 'event-text-mobile' : 'event-text-desktop';
     return (
       <div>
-        <b>{eventInfo.timeText}</b>
-        <div style={{ fontSize: '11px'}}> 
+        <b className={textClass}>{eventInfo.timeText}</b>
+        <div className={textClass}>
           {eventInfo.event.title}
         </div>
       </div>
-    )
+    );
   }
 
-
-
-  // if (isFetching) {
-  //   return <div>Loading events...</div>;
-  // }
 
   return (
     <div className="app-container">
@@ -204,8 +207,8 @@ const ClubSchedule = () => {
         <div className="content-container">
           <div className="single-content-container">
             {isFetching ? (<h2 style={{ color: 'blue',textAlign: 'center' }}>
-    Loading Events...
-  </h2>) : <h2>Club Schedule</h2>}
+              Loading Events...
+            </h2>) : <h2>Club Schedule</h2>}
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
               initialView="timeGridWeek"
@@ -228,6 +231,7 @@ const ClubSchedule = () => {
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
               }}
+              height={screenWidth < 768 ? 600 : 'auto'} // Adjust height for mobile
               eventClick={handleEventClick}
               editable={true}
               selectable={true}
@@ -244,8 +248,6 @@ const ClubSchedule = () => {
               handleUpdateEvent={handleUpdateEvent}
               user={user}
             />}
-
-
           </div>
         </div>
       </div>

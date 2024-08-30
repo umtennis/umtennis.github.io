@@ -161,7 +161,7 @@ const EventRegistrationModal = ({
       ) : (
         <>
           <h5>{selectedEvent.title}</h5>
-          <p>Date: {selectedEvent.start.split("T")[0]}
+          <p>Date: {selectedEvent.start.split("T")[0]}: {selectedEvent.start.split('T')[1]}-{selectedEvent.end.split('T')[1]}
           {selectedEvent.notes && <p>Notes: {selectedEvent.notes}</p>}
           </p>
           <p>Max Participants: {selectedEvent.maxParticipants} <br/>Current: {selectedEvent.number_of_participants}</p>
