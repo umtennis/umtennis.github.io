@@ -5,8 +5,10 @@ const CompTeamModal = ({ show, handleClose, handleSignup }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [gender, setGender] = useState("male");
   const [schoolYear, setSchoolYear] = useState("1");
   const [experience, setExperience] = useState("beginner");
+  const [haveRacquet, setHaveRacquet] = useState("no");
   const [signupSuccess, setSignupSuccess] = useState(false);
   // const [sessionDate, setSessionDate] = useState("");
   const [error, setError] = useState("");
@@ -38,8 +40,10 @@ const CompTeamModal = ({ show, handleClose, handleSignup }) => {
       body: JSON.stringify({
         name,
         email,
+        gender,
         schoolYear,
         experience,
+        haveRacquet
       }),
     });
 
@@ -54,7 +58,7 @@ const CompTeamModal = ({ show, handleClose, handleSignup }) => {
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>
-          {signupSuccess ? "Signup Successful" : "UM Competitive Team Tryouts"}
+          {signupSuccess ? "Signup Successful" : "UM Student Intro Class"}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -99,6 +103,16 @@ const CompTeamModal = ({ show, handleClose, handleSignup }) => {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Form.Group>
+              <Form.Group controlId="formGender" className="mt-3">
+                <Form.Label>Gender</Form.Label>
+                <Form.Select
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <option value="male">male</option>
+                  <option value="female">female</option>
+                </Form.Select>
+              </Form.Group>
               <Form.Group controlId="formYear" className="mt-3">
                 <Form.Label>Current School Year</Form.Label>
                 <Form.Select
@@ -120,6 +134,16 @@ const CompTeamModal = ({ show, handleClose, handleSignup }) => {
                 >
                   <option value="beginner">Beginner</option>
                   <option value="Intermediate">Intermediate</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group controlId="formRacquet" className="mt-3">
+                <Form.Label>Do you have your own racquet?</Form.Label>
+                <Form.Select
+                  value={haveRacquet}
+                  onChange={(e) => setHaveRacquet(e.target.value)}
+                >
+                  <option value="no">no</option>
+                  <option value="yes">yes</option>
                 </Form.Select>
               </Form.Group>
             </Form>
