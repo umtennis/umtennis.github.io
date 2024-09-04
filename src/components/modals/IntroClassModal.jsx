@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 
-const WaitlistModal = ({ show, handleClose, handleSignup }) => {
+const CompTeamModal = ({ show, handleClose, handleSignup }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [rating, setRating] = useState("3");
-  const [status, setStatus] = useState("student");
+  const [schoolYear, setSchoolYear] = useState("1");
+  const [experience, setExperience] = useState("beginner");
   const [signupSuccess, setSignupSuccess] = useState(false);
+  // const [sessionDate, setSessionDate] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const googleSheetURL = process.env.REACT_APP_API_KEY_NEW_MEMBER_WAITLIST;
+
+
+
+  const googleSheetURL = process.env.REACT_APP_API_STUDENT_INTRO;
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
@@ -19,7 +22,7 @@ const WaitlistModal = ({ show, handleClose, handleSignup }) => {
     setError("");
 
     // Validate all fields
-    if (!firstName || !lastName || !email || !phone || !rating || !status) {
+    if (!firstName || !lastName || !email || !schoolYear || !experience) {
       setError("All fields are required. Please fill in all fields.");
       return;
     }
@@ -35,11 +38,11 @@ const WaitlistModal = ({ show, handleClose, handleSignup }) => {
       body: JSON.stringify({
         name,
         email,
-        phone,
-        rating,
-        status,
+        schoolYear,
+        experience,
       }),
     });
+
     if (response.ok) {
       setSignupSuccess(true);
     } else {
@@ -51,18 +54,21 @@ const WaitlistModal = ({ show, handleClose, handleSignup }) => {
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>
-          {signupSuccess ? "Signup Successful" : "Waitlist Signup"}
+          {signupSuccess ? "Signup Successful" : "UM Competitive Team Tryouts"}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {signupSuccess ? (
-          <p>Successfully signup to the waitlist!</p>
+          <p>
+            Successfully signed up! Keep an eye on our email for confirmation!
+          </p>
         ) : (
           <>
             <p>
-              Please fill out the following information to be added to the
-              waitlist. Once a spot becomes available we will notify you for a
-              free tryout session.
+              Only current UM students are eligible for this program. Each
+              student can attend one free class. Classes run on Thursdays from 6
+              PM to 7 PM at the UM Outdoor Courts. We will email you the week of
+              your class, based on availability.
             </p>
             {error && <Alert variant="danger">{error}</Alert>}
             <Form>
@@ -85,45 +91,35 @@ const WaitlistModal = ({ show, handleClose, handleSignup }) => {
                 />
               </Form.Group>
               <Form.Group controlId="formEmail" className="mt-3">
-                <Form.Label>Email</Form.Label>
+                <Form.Label>UM Email</Form.Label>
                 <Form.Control
                   type="email"
-                  placeholder="Enter email"
+                  placeholder="Enter your @myumanitoba.ca email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Form.Group>
-              <Form.Group controlId="formPhone" className="mt-3">
-                <Form.Label>Phone</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter phone number"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group controlId="formRating" className="mt-3">
-                <Form.Label>Rating</Form.Label>
+              <Form.Group controlId="formYear" className="mt-3">
+                <Form.Label>Current School Year</Form.Label>
                 <Form.Select
-                  value={rating}
-                  onChange={(e) => setRating(e.target.value)}
+                  value={schoolYear}
+                  onChange={(e) => setSchoolYear(e.target.value)}
                 >
-                  <option value="3">3</option>
-                  <option value="3.5">3.5</option>
-                  <option value="4">4</option>
-                  <option value="4.5">4.5</option>
-                  <option value="5.0">5.0+</option>
+                  <option value="1st">1st</option>
+                  <option value="2nd">2nd</option>
+                  <option value="3rd">3rd</option>
+                  <option value="4th+">4th+</option>
+                  <option value="Grad">Grad</option>
                 </Form.Select>
               </Form.Group>
-              <Form.Group controlId="formStatus" className="mt-3">
-                <Form.Label>Status</Form.Label>
+              <Form.Group controlId="formExperience" className="mt-3">
+                <Form.Label>Experience</Form.Label>
                 <Form.Select
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
+                  value={experience}
+                  onChange={(e) => setExperience(e.target.value)}
                 >
-                  <option value="student">Student</option>
-                  <option value="alumni">Alumni</option>
-                  <option value="staff">Staff</option>
+                  <option value="beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
                 </Form.Select>
               </Form.Group>
             </Form>
@@ -137,15 +133,16 @@ const WaitlistModal = ({ show, handleClose, handleSignup }) => {
           </Button>
         ) : (
           <>
-            {isSubmitting ? (
-              <Button variant="secondary" disabled>
-                Submitting...
-              </Button>
-            ) : (
-              <Button variant="primary" onClick={handleSubmit}>
-                Submit
-              </Button>
+            {(isSubmitting ? (
+            <Button variant="secondary" disabled>
+              Submitting...
+            </Button>
+            ):
+            <Button variant="primary" onClick={handleSubmit}>
+              Submit
+            </Button>
             )}
+
             <Button variant="secondary" onClick={handleClose}>
               Cancel
             </Button>
@@ -156,4 +153,4 @@ const WaitlistModal = ({ show, handleClose, handleSignup }) => {
   );
 };
 
-export default WaitlistModal;
+export default CompTeamModal;

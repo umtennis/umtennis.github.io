@@ -10,10 +10,12 @@ const CompTeamModal = ({ show, handleClose, handleSignup }) => {
   const [experience, setExperience] = useState("");
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const googleSheetURL = process.env.REACT_APP_API_COMP_TEAM_SIGNUP
 
   const handleSubmit = async () => {
+    setIsSubmitting(true);
     // Clear previous errors
     setError("");
 
@@ -137,9 +139,15 @@ const CompTeamModal = ({ show, handleClose, handleSignup }) => {
           </Button>
         ) : (
           <>
-            <Button variant="primary" onClick={handleSubmit}>
-              Submit
-            </Button>
+            {isSubmitting ? (
+              <Button variant="secondary" disabled>
+                Submitting...
+              </Button>
+            ) : (
+              <Button variant="primary" onClick={handleSubmit}>
+                Submit
+              </Button>
+            )}
             <Button variant="secondary" onClick={handleClose}>
               Cancel
             </Button>

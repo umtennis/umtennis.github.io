@@ -85,3 +85,20 @@
 .event-text-desktop {
   font-size: 11px;
 }
+
+/* Adjust the font size for the event time text */
+.fc-event-time {
+  font-size: 0.75rem; /* Smaller font size for the time */
+  font-weight: normal; /* Adjust weight if needed */
+}
+
+/* Adjust the font size for the event title text */
+.fc-event-title {
+  font-size: 0.85rem; /* Smaller font size for the title */
+  font-weight: normal; /* Keep the title bold, but you can adjust it */
+}
+
+/* Optionally, reduce padding inside the event box */
+.fc-event {
+  padding: 2px 4px; /* Reduce padding to make more room */
+}

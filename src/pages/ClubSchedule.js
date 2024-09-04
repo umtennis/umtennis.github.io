@@ -20,6 +20,14 @@ const ClubSchedule = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth); // Track screen width
 
+  const eventTypeColors = {
+    0: '#3357FF', // Color for type 2
+    1: '#FF5733', // Color for type 0
+    2: '#33FF57', // Color for type 1
+    3: '#FF33A1'  // Color for type 3
+  };
+
+
   useEffect(() => {
     const handleResize = () => setScreenWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
@@ -191,8 +199,8 @@ const ClubSchedule = () => {
     const textClass = screenWidth < 768 ? 'event-text-mobile' : 'event-text-desktop';
     return (
       <div>
-        <b className={textClass}>{eventInfo.timeText}</b>
-        <div className={textClass}>
+        <b className={`fc-event-time ${textClass}`}>{eventInfo.timeText}</b>
+        <div className={`fc-event-title ${textClass}`}>
           {eventInfo.event.title}
         </div>
       </div>
@@ -214,16 +222,15 @@ const ClubSchedule = () => {
               initialView="timeGridWeek"
               events={events.map(event => {
                 const isFull = event.number_of_participants >= event.maxParticipants;
-                const maxParticipants = event.maxParticipants;
                 return {
                   id: event.id,
-                  title: `${event.title} \n (Spots Available: ${maxParticipants - event.number_of_participants}/${maxParticipants})`,
+                  title: `${event.title}`,
                   start: event.start,
                   end: event.end,
                   extendedProps: {
                     participants: event.participants
                   },
-                  backgroundColor: isFull ? 'grey' : undefined, // Change color to grey if full
+                  backgroundColor: isFull ? 'grey' : eventTypeColors[event.type], // Change color to grey if full
                 }
               })}
               headerToolbar={{
@@ -238,6 +245,8 @@ const ClubSchedule = () => {
               slotMinTime="09:00:00"
               slotMaxTime="24:00:00"
               eventContent={renderEventContent}
+              eventOverlap={true} // Allow events to overlap
+              slotEventOverlap={false}
             />
             {selectedEvent && <EventRegistrationModal
               show={modalIsOpen}

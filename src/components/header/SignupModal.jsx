@@ -102,8 +102,7 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
           <>
             <p>
               Note: You will need a registration code to sign up. For all new
-              members, please reach out to{" "}
-              <a href="mailto:umtennis@gmail.com">umtennis@gmail.com</a>.
+              members, visit the Programs page and sign up on the waitlist.
             </p>
 
             <p>

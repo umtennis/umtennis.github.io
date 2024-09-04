@@ -18,6 +18,8 @@ export const EventProvider = ({ children }) => {
         .map(event => ({
           id: event.id,
           title: event.name,
+          description: event.description,
+          type: event.type,
           start: event.start_time ? `${event.date}T${event.start_time}` : event.date,
           end: event.end_time ? `${event.date}T${event.end_time}` : event.date,
           participants: event.participants || [],

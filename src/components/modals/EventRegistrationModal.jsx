@@ -31,6 +31,7 @@ const EventRegistrationModal = ({
   // // Check if the current user is in the participants list
   // const isUserParticipant = selectedEvent?.participants.includes(user?.name);
 
+
   const onParticipate = async () => {
     setLoading(true);
     setError("");
@@ -160,11 +161,16 @@ const EventRegistrationModal = ({
         </>
       ) : (
         <>
-          <h5>{selectedEvent.title}</h5>
-          <p>Date: {selectedEvent.start.split("T")[0]}: {selectedEvent.start.split('T')[1]}-{selectedEvent.end.split('T')[1]}
-          {selectedEvent.notes && <p>Notes: {selectedEvent.notes}</p>}
+          <h5>{selectedEvent.description}</h5>          
+        
+          <p>
+            {/* Date: {selectedEvent.start.split("T")[0]}: {selectedEvent.start.split('T')[1]}-{selectedEvent.end.split('T')[1]} */}
+            Date: {selectedEvent.start.split("T")[0]}:{" "}
+            {new Date(selectedEvent.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })} -{" "}
+            {new Date(selectedEvent.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
+            {selectedEvent.notes && <p>Notes: {selectedEvent.notes}</p>}
           </p>
-          <p>Max Participants: {selectedEvent.maxParticipants} <br/>Current: {selectedEvent.number_of_participants}</p>
+          <p>Spots Available: {selectedEvent.maxParticipants - selectedEvent.number_of_participants}</p>
         </>
       )}
       <ul>
