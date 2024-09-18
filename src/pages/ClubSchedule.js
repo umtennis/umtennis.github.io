@@ -11,7 +11,7 @@ import EventRegistrationModal from '../components/modals/EventRegistrationModal'
 import "./ClubSchedule.css"
 
 const googleSheetURL = process.env.REACT_APP_API_KEY_CLUB_SCHEDULE;
-const updateUserURL = process.env.REACT_APP_API_KEY_MEMBER;
+const updateUserURL = process.env.REACT_APP_API_KEY_MEMBER_LOGIN;
 
 const ClubSchedule = () => {
   const { user, setUser } = useContext(UserContext);

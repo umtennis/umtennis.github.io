@@ -127,7 +127,7 @@ const Programs = () => {
                 )}
               </div>
 
-              {/* UM Student Intro Sessions */}
+              {/* UM Student Intro Sessions
               <div className="program-card">
                 <h3 onClick={() => toggleSection("introClass")} className="program-title">
                   UM Student Free Intro Class
@@ -150,7 +150,7 @@ const Programs = () => {
                     
                   </div>
                 )}
-              </div>
+              </div> */}
 
 
               {/* Group Lessons Section */}
@@ -161,7 +161,7 @@ const Programs = () => {
                 {expandedSection === "groupLessons" && (
                   <div className="program-description">
                     <p>
-                      If you're interested in group lessons, please email <a href="mailto:umtennis@gmail.com">umtennis@gmail.com</a> for more information.
+                      If you're are UMTC member and interested in group lessons, please email <a href="mailto:umtennis@gmail.com">umtennis@gmail.com</a> for more information.
                     </p>
                   </div>
                 )}
@@ -175,7 +175,7 @@ const Programs = () => {
                 {expandedSection === "privateLessons" && (
                   <div className="program-description">
                     <p>
-                      For those interested in private lessons, please email <a href="mailto:umtennis@gmail.com">umtennis@gmail.com</a> for more information.
+                    If you're are UMTC member and interested in private lessons, please email <a href="mailto:umtennis@gmail.com">umtennis@gmail.com</a> for more information.
                     </p>
                   </div>
                 )}

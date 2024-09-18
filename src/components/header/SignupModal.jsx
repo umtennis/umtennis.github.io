@@ -61,6 +61,7 @@ const SignUpModal = ({ show, handleClose, handleSignup }) => {
       status,
       topSize,
       code,
+      action:"newUser"
     };
     
     // POST request to your Google Apps Script
