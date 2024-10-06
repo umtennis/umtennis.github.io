@@ -31,6 +31,8 @@ const Announcements = ({ isAdmin }) => {
           body: JSON.stringify({ ...editingItem, action: "edit" }),
         });
 
+        console.log(response)
+
         if (response.ok) {
           alert("You have successfully saved a new announcement!");
         } else {
@@ -57,14 +59,15 @@ const Announcements = ({ isAdmin }) => {
       try {
         dispatch({ type: "DELETE_NEWS", payload: deletingItem.id });
 
-        const response = fetch(googleSheetURL, {
-          redirect: "follow",
+        const response = await fetch(googleSheetURL, {
+          // redirect: "follow",
           method: "POST",
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8",
-          },
+          // headers: {
+          //   "Content-Type": "text/plain;charset=utf-8",
+          // },
           body: JSON.stringify({ id: deletingItem.id, action: "delete" }),
         });
+        console.log(response)
         if (response.ok) {
           alert("You have successfully deleted a new announcement!");
         } else {

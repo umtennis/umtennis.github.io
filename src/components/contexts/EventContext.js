@@ -6,6 +6,7 @@ export const EventContext = createContext();
 export const EventProvider = ({ children }) => {
   const [events, setEvents] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
+  const [participantFrequency, setParticipantFrequency] = useState({});
 
   const fetchEvents = async () => {
     setIsFetching(true);
@@ -29,6 +30,7 @@ export const EventProvider = ({ children }) => {
         }));
 
       setEvents(mappedEvents);
+      initializeParticipantFrequency(mappedEvents); // Initialize participant frequency after fetching
     } catch (error) {
       console.error("Error fetching events:", error);
     } finally {
@@ -40,25 +42,70 @@ export const EventProvider = ({ children }) => {
     fetchEvents(); // Fetch events on startup
   }, []);
 
+  // Initializes the participant frequency when events are first fetched
+  const initializeParticipantFrequency = (events) => {
+    const frequency = {};
+
+    events.forEach(event => {
+      let participants = event.participants;
+
+      if (typeof participants === 'string') {
+        participants = participants.split(',').map(p => p.trim());
+      }
+
+      if (Array.isArray(participants)) {
+        participants.forEach(participant => {
+          if (participant) {
+            frequency[participant] = (frequency[participant] || 0) + 1;
+          }
+        });
+      }
+    });
+
+    setParticipantFrequency(frequency);
+  };
+
+  // Updates the frequency of a participant by adding 1
+  const incrementParticipantFrequency = (participantName) => {
+    setParticipantFrequency(prevFrequency => ({
+      ...prevFrequency,
+      [participantName]: (prevFrequency[participantName] || 0) + 1,  // Adds participant if not present
+    }));
+  };
+
+  // Updates the frequency of a participant by subtracting 1
+  const decrementParticipantFrequency = (participantName) => {
+    setParticipantFrequency(prevFrequency => {
+      const newFrequency = { ...prevFrequency };
+      if (newFrequency[participantName]) {
+        newFrequency[participantName] -= 1;
+
+        if (newFrequency[participantName] === 0) {
+          delete newFrequency[participantName];
+        }
+      }
+      return newFrequency;
+    });
+  };
+
   const addParticipant = (eventId, participantName) => {
     const updatedEvents = events.map(event => {
       if (event.id === eventId) {
-        // Determine the correct way to add the participant based on the current data type
         let updatedParticipants;
-  
+
         if (typeof event.participants === 'string') {
-          // If participants is a string, append the new participant
           updatedParticipants = event.participants
             ? `${event.participants}, ${participantName}`
             : participantName;
         } else if (Array.isArray(event.participants)) {
-          // If participants is an array, join it into a string after adding the new participant
           updatedParticipants = [...event.participants, participantName].join(', ');
         } else {
-          // If participants is undefined or null, initialize it as a string
           updatedParticipants = participantName;
         }
-  
+
+        // Increment the frequency of the participant
+        incrementParticipantFrequency(participantName);
+
         return {
           ...event,
           number_of_participants: event.number_of_participants + 1,
@@ -70,10 +117,29 @@ export const EventProvider = ({ children }) => {
     setEvents(updatedEvents);
   };
 
-  const removeParticipant = (updatedEvent) => {
+  const removeParticipant = (eventId, participantName) => {
     const updatedEvents = events.map(event => {
-      if (event.id === updatedEvent.id) {
-        event = updatedEvent
+      if (event.id === eventId) {
+        let updatedParticipants;
+
+        if (typeof event.participants === 'string') {
+          updatedParticipants = event.participants
+            .split(',')
+            .map(p => p.trim())
+            .filter(p => p !== participantName)
+            .join(', ');
+        } else if (Array.isArray(event.participants)) {
+          updatedParticipants = event.participants.filter(p => p !== participantName);
+        }
+
+        // Decrement the frequency of the participant
+        decrementParticipantFrequency(participantName);
+
+        return {
+          ...event,
+          number_of_participants: event.number_of_participants - 1,
+          participants: updatedParticipants
+        };
       }
       return event;
     });
@@ -81,8 +147,9 @@ export const EventProvider = ({ children }) => {
   };
 
   return (
-    <EventContext.Provider value={{ events, addParticipant, removeParticipant, fetchEvents, isFetching }}>
+    <EventContext.Provider value={{ events, addParticipant, removeParticipant, fetchEvents, participantFrequency, isFetching }}>
       {children}
     </EventContext.Provider>
   );
 };
+

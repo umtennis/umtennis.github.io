@@ -15,7 +15,7 @@ const updateUserURL = process.env.REACT_APP_API_KEY_MEMBER_LOGIN;
 
 const ClubSchedule = () => {
   const { user, setUser } = useContext(UserContext);
-  const { events, addParticipant, removeParticipant, isFetching } = useContext(EventContext);
+  const { events, addParticipant, removeParticipant, isFetching, participantFrequency } = useContext(EventContext);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth); // Track screen width
@@ -41,40 +41,42 @@ const ClubSchedule = () => {
     setModalIsOpen(true);
   };
 
-  const handleUserBooking = async (action) =>{
-    let actBooking = 0;
-    if (action === "add"){
-      actBooking = -1
-    } else if(action ==='remove'){
-      actBooking = 1
-    }
-    try{
-      const response = await fetch(updateUserURL, {
-        // redirect: "follow",
-        method: 'POST',
-        // headers: {
-        //   "Content-Type": "text/plain;charset=utf-8",
-        // },
-        body: JSON.stringify({
-          email: user.email,
-          phone: user.phone,
-          booking: user.booking + actBooking+"",
-        }),
-      });
-      if (response.status === 200) {
-        let updatedUser = {...user,booking:user.booking + actBooking}
-        setUser(updatedUser)
+  // const handleUserBooking = async (action) =>{
+  //   let actBooking = 0;
+  //   if (action === "add"){
+  //     actBooking = -1
+  //   } else if(action ==='remove'){
+  //     actBooking = 1
+  //   }
+  //   try{
+  //     const response = await fetch(updateUserURL, {
+  //       // redirect: "follow",
+  //       method: 'POST',
+  //       // headers: {
+  //       //   "Content-Type": "text/plain;charset=utf-8",
+  //       // },
+  //       body: JSON.stringify({
+  //         email: user.email,
+  //         phone: user.phone,
+  //         booking: user.booking + actBooking+"",
+  //         action: "update"
+  //       }),
+  //     });
+  //     if (response.status === 200) {
+  //       let updatedUser = {...user,booking:user.booking + actBooking}
+  //       setUser(updatedUser)
 
-        return { success: true };
-      }
+  //       return { success: true };
+  //     }
 
-    }catch{
-      return { success: false, message: 'Error! Possibly server limit reached. Try again tomorrow.' };
-    }
-  }
+  //   }catch{
+  //     return { success: false, message: 'Error! Possibly server limit reached. Try again tomorrow.' };
+  //   }
+  // }
 
   const handleParticipate = async () => {    
-    if (selectedEvent.number_of_participants < selectedEvent.maxParticipants) {      
+    if (selectedEvent.number_of_participants < selectedEvent.maxParticipants) {     
+      
       try {
         const response = await fetch(googleSheetURL, {
           // redirect: "follow",
@@ -93,7 +95,7 @@ const ClubSchedule = () => {
         // console.log(response);
 
         if (response.status === 200) {
-          handleUserBooking("add");
+          // handleUserBooking("add");
           const updatedParticipants = selectedEvent.participants + ', ' + user.name;
 
           const updatedEvent = {
@@ -105,7 +107,7 @@ const ClubSchedule = () => {
           //TODO fix this repeating code
           setSelectedEvent(updatedEvent);
           addParticipant(selectedEvent.id, user.name);
-          
+
           // setSuccess(true);
           return { success: true };
         } else {
@@ -138,10 +140,10 @@ const ClubSchedule = () => {
       });
 
       if (response.status === 200) {
-        handleUserBooking("remove");
+        // handleUserBooking("remove");
         let participantsArray = selectedEvent.participants.split(', ');
-        let updatedParticipants = participantsArray.filter(name => name !== user.name)
-        updatedParticipants = updatedParticipants.join(', ')
+        let updatedParticipants = participantsArray.filter(name => name !== user.name).join(', ')
+
 
         const updatedEvent = {
           ...selectedEvent,
@@ -151,7 +153,7 @@ const ClubSchedule = () => {
 
         //TODO remove repeating code
         setSelectedEvent(updatedEvent);
-        removeParticipant(updatedEvent);
+        removeParticipant(selectedEvent.id, user.name);
 
         return { success: true };
       } else {
@@ -256,6 +258,7 @@ const ClubSchedule = () => {
               handleCancelParticipation={handleCancelParticipation}
               handleUpdateEvent={handleUpdateEvent}
               user={user}
+              participantFrequency= {participantFrequency}
             />}
           </div>
         </div>

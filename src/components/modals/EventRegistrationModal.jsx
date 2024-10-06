@@ -11,6 +11,7 @@ const EventRegistrationModal = ({
   handleCancelParticipation,
   handleUpdateEvent,
   user,
+  participantFrequency
 }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -35,6 +36,13 @@ const EventRegistrationModal = ({
   const onParticipate = async () => {
     setLoading(true);
     setError("");
+
+      // Check if the user has already participated in 2 or more events
+    if (participantFrequency[user.name] >= user.booking) {
+      setError("You have already 2 active bookings.");
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await handleParticipate();
@@ -164,7 +172,6 @@ const EventRegistrationModal = ({
           <h5>{selectedEvent.description}</h5>          
         
           <p>
-            {/* Date: {selectedEvent.start.split("T")[0]}: {selectedEvent.start.split('T')[1]}-{selectedEvent.end.split('T')[1]} */}
             Date: {selectedEvent.start.split("T")[0]}:{" "}
             {new Date(selectedEvent.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })} -{" "}
             {new Date(selectedEvent.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
@@ -180,7 +187,7 @@ const EventRegistrationModal = ({
       </ul>
       {showSuccessMessage ? (
         <Alert variant="success">
-          You have successfully registered for the event!
+          Success!
         </Alert>
       ) : (
         <>{error && <Alert variant="danger">{error}</Alert>}</>
@@ -226,6 +233,8 @@ const EventRegistrationModal = ({
                   className="me-2"
                 >
                   {loading ? "Registering..." : "Register"}
+                
+                {/* TODO REMOVE, FUNCTION NOT USED  */}
                 </Button>
                 : <OverlayTrigger
                 placement="top"
