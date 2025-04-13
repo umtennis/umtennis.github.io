@@ -41,7 +41,7 @@ const About = () => {
                     <ul>
                       <li>Craig Hillier</li>
                       <li>Mario Bayueno</li>
-                      <li>Jesse Shen</li>
+                      <li>Estefania Garcia Reyes</li>
                       <li>Tony Weekes</li>
                     </ul>
                   </p>
