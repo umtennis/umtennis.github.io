@@ -248,7 +248,7 @@ const EventRegistrationModal = ({
             <p>
               Spots Available:{" "}
               {selectedEvent.maxParticipants -
-                selectedEvent.number_of_participants}{" "}
+                selectedEvent.numberOfParticipants}{" "}
               (Max. {selectedEvent.maxParticipants})
             </p>
           </>

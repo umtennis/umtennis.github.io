@@ -33,7 +33,7 @@ const ClubSchedule = () => {
   };
 
   const handleParticipate = async () => {
-    if (selectedEvent.number_of_participants < maxParticipants) {
+    if (selectedEvent.numberOfParticipants < maxParticipants) {
       setLoading(true); // Start loading
 
       try {
@@ -86,7 +86,7 @@ const ClubSchedule = () => {
               initialView="timeGridWeek"
               events={events.map(event => ({
                 id: event.id,
-                title: `${event.title} \n (Spots Available: ${maxParticipants - event.number_of_participants}/${maxParticipants})`,
+                title: `${event.title} \n (Spots Available: ${maxParticipants - event.numberOfParticipants}/${maxParticipants})`,
                 start: event.start,
                 end: event.end,
                 extendedProps: {
@@ -114,7 +114,7 @@ const ClubSchedule = () => {
             >
               <h2>Register for Event</h2>
               <p>{selectedEvent?.title}</p>
-              <p>{`Participants: ${selectedEvent?.number_of_participants}/${maxParticipants}`}</p>
+              <p>{`Participants: ${selectedEvent?.numberOfParticipants}/${maxParticipants}`}</p>
               {loading ? (
                 <div className="loading-spinner">Loading...</div>
               ) : (
@@ -137,7 +137,7 @@ const ClubSchedule = () => {
                   </ul>
                   <button
                     onClick={handleParticipate}
-                    disabled={loading || selectedEvent?.number_of_participants >= maxParticipants}
+                    disabled={loading || selectedEvent?.numberOfParticipants >= maxParticipants}
                     className="participate-button"
                   >
                     Participate

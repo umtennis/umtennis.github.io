@@ -80,7 +80,7 @@ const ClubSchedule = () => {
   };
 
   const handleParticipate = async () => {
-    if (selectedEvent.number_of_participants < selectedEvent.maxParticipants) {
+    if (selectedEvent.numberOfParticipants < selectedEvent.maxParticipants) {
       try {
         const response = await fetch(googleSheetURL, {
           method: 'POST',
@@ -97,7 +97,7 @@ const ClubSchedule = () => {
           const updatedEvent = {
             ...selectedEvent,
             participants: updatedParticipants,
-            number_of_participants: selectedEvent.number_of_participants + 1,
+            numberOfParticipants: selectedEvent.numberOfParticipants + 1,
           };
           setSelectedEvent(updatedEvent);
           addParticipant(selectedEvent.eventId, user.name);
@@ -133,7 +133,7 @@ const ClubSchedule = () => {
         const updatedEvent = {
           ...selectedEvent,
           participants: updatedParticipants,
-          number_of_participants: selectedEvent.number_of_participants - 1,
+          numberOfParticipants: selectedEvent.numberOfParticipants - 1,
         };
         setSelectedEvent(updatedEvent);
         removeParticipant(selectedEvent.eventId, user.name);
@@ -250,7 +250,7 @@ const ClubSchedule = () => {
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView="timeGridWeek"
                 events={events.map(event => {
-                  const isFull = event.number_of_participants >= event.maxParticipants;
+                  const isFull = event.numberOfParticipants >= event.maxParticipants;
                   return {
                     id: event.eventId,
                     title: `${event.title}`,

@@ -26,7 +26,7 @@ export const EventProvider = ({ children }) => {
           start: event.start_time ? `${event.date}T${event.start_time}` : event.date,
           end: event.end_time ? `${event.date}T${event.end_time}` : event.date,
           participants: event.participants || [],
-          number_of_participants: event.number_of_participants || 0,
+          numberOfParticipants: event.numberOfParticipants || 0,
           notes: event.notes || '',
           maxParticipants: event.maxParticipants,
           eventDate: event.date
@@ -125,7 +125,7 @@ export const EventProvider = ({ children }) => {
 
         return {
           ...event,
-          number_of_participants: event.number_of_participants + 1,
+          numberOfParticipants: event.numberOfParticipants + 1,
           participants: updatedParticipants
         };
       }
@@ -154,7 +154,7 @@ export const EventProvider = ({ children }) => {
 
         return {
           ...event,
-          number_of_participants: event.number_of_participants - 1,
+          numberOfParticipants: event.numberOfParticipants - 1,
           participants: updatedParticipants
         };
       }
