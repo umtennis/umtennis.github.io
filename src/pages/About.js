@@ -1,9 +1,8 @@
-import React from "react";
-import Header from "../components/header/Header.jsx";
-import Footer from "../components/footer/Footer.jsx";
 import execMembers from "../assets/exec_members_2024.jpg";
-import generalMembers from "../assets/general_members_2024.jpg";
 import generalMembers2023 from "../assets/general_members_2023.JPG";
+import generalMembers from "../assets/general_members_2024.jpg";
+import Footer from "../components/footer/Footer.jsx";
+import Header from "../components/header/Header.jsx";
 import "./About.css"; // Import the CSS for styling
 
 const About = () => {
@@ -32,11 +31,11 @@ const About = () => {
               </p>
             </div>
             <div className="section-layout">
-              <h2>Executive Members 2024</h2>
+              <h2>Executive Members 2025</h2>
               <div className="exec-members-container">
                 <div className="exec-members-info">
                   <p className="section-message">
-                    Meet our dedicated executive team for the 2024 season:
+                    Meet our dedicated executive team for the 2025 season:
                     <p></p>
                     <ul>
                       <li>Craig Hillier</li>
